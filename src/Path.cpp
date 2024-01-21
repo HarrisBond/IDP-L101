@@ -1,7 +1,6 @@
 #include "Path.h"
 
-Path::Path(){
-    path = cppQueue(sizeof(Step), 20, FIFO);
+Path::Path() : path(sizeof(Step), 20, FIFO, false){
 }
 
 void Path::AddStep(Step newStep){

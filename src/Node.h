@@ -1,7 +1,7 @@
 #pragma once
 
 enum BlockType {solid, foam, empty};
-enum WayPoint {start, resA, resB, red, green};
+enum WayPoint {start, resA, resB, redSolid, greenFoam};
 
 class Node{
 public:
@@ -10,6 +10,7 @@ public:
     void SetNextIfSolid(Node* node);
     void SetNextIfFoam(Node* node);
     void SetNextIfEmpty(Node* node);
+    WayPoint GetWayPoint();
     Node* GetNext(BlockType type);
 private:
     WayPoint waypoint;

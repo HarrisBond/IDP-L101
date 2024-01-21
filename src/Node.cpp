@@ -1,5 +1,7 @@
 #include "Node.h"
 
+
+
 Node::Node(WayPoint _waypoint){
     waypoint = _waypoint;
     nextIfSolid = nullptr;
@@ -24,6 +26,10 @@ void Node::SetNextIfFoam(Node* node){
 
 void Node::SetNextIfEmpty(Node* node){
     nextIfEmpty = node;
+}
+
+WayPoint Node::GetWayPoint(){
+    return waypoint;
 }
 
 Node* Node::GetNext(BlockType type){
