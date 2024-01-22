@@ -18,6 +18,8 @@ namespace IO {
         //these should both include limits so you can't accidentally tell the robot to break itself
         void SetGripperServoAngle(float angle);
         void SetArmServoAngle(float angle);
+        const float lineFollowLinearSpeed = 0.5;
+        const float lineFollowAngularSpeed = 0.5;
     }
 
     namespace Sensors{

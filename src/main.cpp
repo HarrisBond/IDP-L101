@@ -2,6 +2,7 @@
 #include "IO.h"
 #include "LineFollowState.h"
 #include "StateMachine.h"
+#include "Sequencer.h"
 
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
@@ -12,8 +13,9 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
   StateMachine stateMachine;
+  Sequencer sequencer();
   stateMachine.ChangeState(LineFollowState::GetInstance());
-  stateMachine.ChangeState(LineFollowState::GetInstance());
+  // stateMachine.ChangeState(LineFollowState::GetInstance());
   while (true){
     //calculate delta time somehow
     stateMachine.Update();

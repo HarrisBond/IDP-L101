@@ -31,8 +31,9 @@ Sequencer::Sequencer(){
     //the corresponding reverse paths can then be generated and filled in algorithmically by 
     //iterating over the forward path backwards and reversing all turns.
     Step start_resA[] = {Step::forwardLeft, Step::forwardRight, Step::forwardRight};
-    pathLUT[WayPoint::start][WayPoint::resA].SetPath(start_resA);
-}
+    // pathLUT[WayPoint::start][WayPoint::resA].SetPath(start_resA);
+    SetPathLUT(WayPoint::start, WayPoint::resA, start_resA);
+} 
 
 Path Sequencer::GetNextPath(BlockType type){
     WayPoint currentWayPoint = currentNode->GetWayPoint();
@@ -40,15 +41,23 @@ Path Sequencer::GetNextPath(BlockType type){
     WayPoint nextWayPoint = nextNode->GetWayPoint();
 
     //now need to get path from these start and end points
-    Path path = GetPath(currentWayPoint, nextWayPoint);
+    Step* pathArray = GetPath(currentWayPoint, nextWayPoint);
 
     //delete the current node and set current to point to the next one
     delete currentNode;
     currentNode = nextNode;
 
-    return path;
+    Path output = Path();
+    output.SetPath(pathArray);
+    return output;
 }
 
-Path Sequencer::GetPath(WayPoint start, WayPoint end){
+Step* Sequencer::GetPath(WayPoint start, WayPoint end){
     return pathLUT[start][end];
+}
+
+void Sequencer::SetPathLUT(WayPoint start, WayPoint end, Step path[]){
+    for (int i = 0; i < sizeof(path) / sizeof(path[0]); i++){
+        pathLUT[start][end][i] = path[i];
+    }
 }

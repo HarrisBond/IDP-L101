@@ -11,7 +11,8 @@ class Path{
         Path();
         void AddStep(Step newStep);
         void SetPath(Step steps[]);
-        Step GetNext();
+        Step GetNextStep();
+        Step GetCurrentStep();
     private:
         cppQueue path;
 };

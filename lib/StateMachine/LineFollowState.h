@@ -9,4 +9,6 @@ public:
     void Update(StateMachine* parentMachine);
     void ExitState(StateMachine* parentMachine);
     static State& GetInstance();
+private:
+    Path* currentPath;
 };

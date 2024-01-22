@@ -14,13 +14,20 @@ void Path::SetPath(Step steps[]){
     }
 }
 
-Step Path::GetNext(){
+Step Path::GetNextStep(){
     Step next;
-    if (path.pop(&next)){
-        return next;
-    } else {
+    if (!path.pop(&next)){
         return Step::null;
     }
+    return next;
+}
+
+Step Path::GetCurrentStep(){
+    Step current;
+    if (!path.peek(&current)){
+        return Step::null;
+    }
+    return current;
 }
 
 

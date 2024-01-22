@@ -1,5 +1,7 @@
 #include "StateMachine.h"
 #include <Arduino.h>
+#include "IO.h"
+#include "Node.h"
 
 LineFollowState::LineFollowState() : State() {
     Serial.println("line follow state constructor");
@@ -13,6 +15,23 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
 void LineFollowState::Update(StateMachine* parentMachine) {
     Serial.println("Update fron the line follow state");
     //need to check left and right sensors and turn accordingly.
+    bool left = IO::Sensors::LineSenseLeft();
+    bool right = IO::Sensors::LineSenseRight();
+
+    float linearSpeed = IO::Motors::lineFollowLinearSpeed;
+    float angularSpeed = IO::Motors::lineFollowAngularSpeed;
+    if (left && !right){
+        IO::Motors::SetRelativeSpeeds(linearSpeed, angularSpeed);//anticlockwise
+    } else if (!left && right){
+        IO::Motors::SetRelativeSpeeds(linearSpeed, -angularSpeed);//clockwise
+    } else if (left && right){
+        //t junction
+        if (currentPath->GetCurrentStep() == Step::forwardLeft){
+            //turn left
+        } else if (currentPath->GetCurrentStep() == Step::forwardRight){
+            //turn right
+        }
+    }
 
     //if both sensors detect line, we are at a junction and need to choose turn direction
     //based on the path planning. also need to tell the state machine that a t junction has been reached.

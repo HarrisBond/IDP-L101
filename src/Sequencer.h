@@ -9,6 +9,7 @@ class Sequencer{
     static Path GetNextPath(BlockType type);
     private:
     static Node* currentNode;
-    static Path GetPath(WayPoint start, WayPoint end);
-    static Path pathLUT[5][5];
+    static Step* GetPath(WayPoint start, WayPoint end);
+    static Step pathLUT[5][5][10];
+    static void SetPathLUT(WayPoint start, WayPoint end, Step path[]);
 };
