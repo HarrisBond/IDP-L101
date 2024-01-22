@@ -11,4 +11,6 @@ public:
     static State& GetInstance();
 private:
     Path* currentPath;
+    float timeSinceJunction;
+    const float timeSinceJunctionThreshold = 1.0;
 };

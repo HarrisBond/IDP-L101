@@ -1,7 +1,8 @@
 #include "StateMachine.h"
 #include <Arduino.h>
 #include "IO.h"
-#include "Node.h"
+#include "Path.h"
+#include "Time.h"
 
 LineFollowState::LineFollowState() : State() {
     Serial.println("line follow state constructor");
@@ -14,6 +15,8 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
 
 void LineFollowState::Update(StateMachine* parentMachine) {
     Serial.println("Update fron the line follow state");
+    timeSinceJunction += Time::GetDeltaTime();
+
     //need to check left and right sensors and turn accordingly.
     bool left = IO::Sensors::LineSenseLeft();
     bool right = IO::Sensors::LineSenseRight();
@@ -31,6 +34,13 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         } else if (currentPath->GetCurrentStep() == Step::forwardRight){
             //turn right
         }
+        if (timeSinceJunction > timeSinceJunctionThreshold){
+            //new junction detected
+            Step nextStep = currentPath->GetNextStep();
+            timeSinceJunction = 0.0;
+        }
+    } else {
+        IO::Motors::SetRelativeSpeeds(linearSpeed, 0);//forward
     }
 
     //if both sensors detect line, we are at a junction and need to choose turn direction

@@ -3,9 +3,9 @@
 class Time {
 public:
 	Time();
-	void Update();
-	float GetDeltaTime();
+	static void Update();
+	static float GetDeltaTime();
 private:
-	float deltaTime;
-	float previousTime;
+	static float deltaTime;
+	static float previousTime;
 };
