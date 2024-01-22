@@ -25,15 +25,30 @@ Sequencer::Sequencer(){
     Node end(WayPoint::start);
     redSolidB.SetNextIfEmpty(&end);
     greenFoamB.SetNextIfEmpty(&end);
+
+    //all required paths are hard coded here and added to the lookup table
+    //paths should only be added where the start waypoint is before the end in the waypoint enum
+    //the corresponding reverse paths can then be generated and filled in algorithmically by 
+    //iterating over the forward path backwards and reversing all turns.
+    Step start_resA[] = {Step::forwardLeft, Step::forwardRight, Step::forwardRight};
+    pathLUT[WayPoint::start][WayPoint::resA].SetPath(start_resA);
 }
 
 Path Sequencer::GetNextPath(BlockType type){
     WayPoint currentWayPoint = currentNode->GetWayPoint();
     Node* nextNode = currentNode->GetNext(type);
     WayPoint nextWayPoint = nextNode->GetWayPoint();
+
     //now need to get path from these start and end points
+    Path path = GetPath(currentWayPoint, nextWayPoint);
 
     //delete the current node and set current to point to the next one
     delete currentNode;
     currentNode = nextNode;
+
+    return path;
+}
+
+Path Sequencer::GetPath(WayPoint start, WayPoint end){
+    return pathLUT[start][end];
 }

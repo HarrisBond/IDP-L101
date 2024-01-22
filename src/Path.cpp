@@ -7,6 +7,13 @@ void Path::AddStep(Step newStep){
     path.push(&newStep);
 }
 
+void Path::SetPath(Step steps[]){
+    path.flush();
+    for (int i = 0; i < sizeof(steps) / sizeof(steps[0]); i++){
+        path.push(&steps[i]);
+    }
+}
+
 Step Path::GetNext(){
     Step next;
     if (path.pop(&next)){
@@ -15,3 +22,5 @@ Step Path::GetNext(){
         return Step::null;
     }
 }
+
+
