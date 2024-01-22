@@ -10,5 +10,5 @@ void Time::Update() {
 
 float Time::GetDeltaTime() {
 	//return delta time
-	return 0.;
+	return 0.5;
 }

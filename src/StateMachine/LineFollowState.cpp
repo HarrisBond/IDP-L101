@@ -1,46 +1,52 @@
 #include "StateMachine.h"
 #include <Arduino.h>
 #include "IO.h"
-#include "Path.h"
+#include "../Paths/Path.h"
 #include "Time.h"
+#include "../Sequencer.h"
 
 LineFollowState::LineFollowState() : State() {
     Serial.println("line follow state constructor");
+    Serial.flush();
 }
 
 void LineFollowState::EnterState(StateMachine* parentMachine){
     //initialization
-    Serial.println("Hello from the Line Follow State ");
+    Sequencer::GetNextPath(BlockType::empty, currentPath);
+    timeSinceJunction = 0.0;
+    Serial.println("Hello from the Line Follow State, current step is " + String(currentPath->GetCurrentStep()));
+    Serial.flush();
 }
 
 void LineFollowState::Update(StateMachine* parentMachine) {
-    Serial.println("Update fron the line follow state");
+    Serial.println("Update fron the line follow state, current step is " + String(currentPath->GetCurrentStep()));
+    Serial.flush();
     timeSinceJunction += Time::GetDeltaTime();
 
     //need to check left and right sensors and turn accordingly.
     bool left = IO::Sensors::LineSenseLeft();
     bool right = IO::Sensors::LineSenseRight();
-
-    float linearSpeed = IO::Motors::lineFollowLinearSpeed;
-    float angularSpeed = IO::Motors::lineFollowAngularSpeed;
+    Serial.print(String(left) + ", " + String(right) + "\n");
+    Serial.flush();
     if (left && !right){
-        IO::Motors::SetRelativeSpeeds(linearSpeed, angularSpeed);//anticlockwise
+        IO::Motors::ForwardLeft();//anticlockwise
     } else if (!left && right){
-        IO::Motors::SetRelativeSpeeds(linearSpeed, -angularSpeed);//clockwise
+        IO::Motors::ForwardRight();//clockwise
     } else if (left && right){
         //t junction
         if (currentPath->GetCurrentStep() == Step::forwardLeft){
-            //turn left
+            IO::Motors::ForwardLeft();
         } else if (currentPath->GetCurrentStep() == Step::forwardRight){
-            //turn right
+            IO::Motors::ForwardRight();
         }
         if (timeSinceJunction > timeSinceJunctionThreshold){
             //new junction detected
-            Step nextStep = currentPath->GetNextStep();
+            // Step nextStep = currentPath->GetNextStep();
+            currentPath->GetNextStep();
             timeSinceJunction = 0.0;
         }
     } else {
-        IO::Motors::SetRelativeSpeeds(linearSpeed, 0);//forward
+        IO::Motors::Forward();
     }
 
     //if both sensors detect line, we are at a junction and need to choose turn direction
@@ -54,6 +60,7 @@ void LineFollowState::Update(StateMachine* parentMachine) {
 
 void LineFollowState::ExitState(StateMachine* parentMachine) {
     Serial.println("Exiting the line follow state");
+    Serial.flush();
 }
 
 //this returns a singleton instance of the line follow state. A function like this needs to be included in each concrete state.

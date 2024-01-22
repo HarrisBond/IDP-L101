@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "Paths/Path.h"
 
 
 class LineFollowState : public State {

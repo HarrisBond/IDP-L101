@@ -10,9 +10,10 @@ class Path{
     public:
         Path();
         void AddStep(Step newStep);
-        void SetPath(Step steps[]);
+        void SetPath(Step steps[], int numSteps);
         Step GetNextStep();
         Step GetCurrentStep();
+        void PrintPath();
     private:
         cppQueue path;
 };

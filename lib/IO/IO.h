@@ -11,6 +11,9 @@ namespace IO {
         //angular speed, +ve is anticlockwise, -ve is clockwise (for right hand rule angular velocity reasons)
         //set left and right motor speeds to a sum of common mode (for linear) and difference mode (for turning).
         void SetRelativeSpeeds(float linear, float angular);
+        void ForwardLeft();
+        void ForwardRight();
+        void Forward();
 
         //should just call SetRelativeSpeeds(0,0)
         void Stop();

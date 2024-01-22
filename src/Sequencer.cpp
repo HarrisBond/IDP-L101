@@ -1,9 +1,22 @@
 #include "Sequencer.h"
+#include <Arduino.h>
 
-Sequencer::Sequencer(){
+Node* Sequencer::currentNode = nullptr;
+Step Sequencer::pathLUT[5][5][MAX_PATH_LENGTH];
+
+void Sequencer::Initialize(){
+    // for (unsigned int i = 0; i < sizeof(pathLUT) / sizeof(pathLUT[0]); i++){
+    //     for (unsigned int j = 0; j < sizeof(pathLUT[0]) / sizeof(pathLUT[0][0]); j++){
+    //         for (unsigned int k = 0; k < sizeof(pathLUT[0][0]) / sizeof(pathLUT[0][0][0]); k++){
+    //             pathLUT[i][j][k] = Step::null;
+    //         }
+    //     }
+    // }
+    // return;
     //initialize sequence tree
     //should go start, resA, green/red, resB, green/red, end
     Node startNode(WayPoint::start);
+    currentNode = &startNode;
 
     Node resA(WayPoint::resA);
     currentNode->SetNextIfEmpty(&resA);
@@ -32,10 +45,11 @@ Sequencer::Sequencer(){
     //iterating over the forward path backwards and reversing all turns.
     Step start_resA[] = {Step::forwardLeft, Step::forwardRight, Step::forwardRight};
     // pathLUT[WayPoint::start][WayPoint::resA].SetPath(start_resA);
-    SetPathLUT(WayPoint::start, WayPoint::resA, start_resA);
+    SetPathLUT(WayPoint::start, WayPoint::resA, start_resA, sizeof(start_resA) / sizeof(start_resA[0]));
+    // Serial.print("start to resA path: " + String(pathLUT[WayPoint::start][WayPoint::resA][0]) + ", " + String(pathLUT[WayPoint::start][WayPoint::resA][1]) + "\n");
 } 
 
-Path Sequencer::GetNextPath(BlockType type){
+void Sequencer::GetNextPath(BlockType type, Path* path){
     WayPoint currentWayPoint = currentNode->GetWayPoint();
     Node* nextNode = currentNode->GetNext(type);
     WayPoint nextWayPoint = nextNode->GetWayPoint();
@@ -46,18 +60,16 @@ Path Sequencer::GetNextPath(BlockType type){
     //delete the current node and set current to point to the next one
     delete currentNode;
     currentNode = nextNode;
-
-    Path output = Path();
-    output.SetPath(pathArray);
-    return output;
+    path->SetPath(pathArray, MAX_PATH_LENGTH);
+    path->PrintPath();
 }
 
 Step* Sequencer::GetPath(WayPoint start, WayPoint end){
     return pathLUT[start][end];
 }
 
-void Sequencer::SetPathLUT(WayPoint start, WayPoint end, Step path[]){
-    for (int i = 0; i < sizeof(path) / sizeof(path[0]); i++){
+void Sequencer::SetPathLUT(WayPoint start, WayPoint end, Step path[], int pathLength){
+    for (int i = 0; i < pathLength; i++){
         pathLUT[start][end][i] = path[i];
     }
 }
