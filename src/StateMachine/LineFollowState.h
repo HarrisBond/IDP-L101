@@ -11,7 +11,7 @@ public:
     void ExitState(StateMachine* parentMachine);
     static State& GetInstance();
 private:
-    Path* currentPath;
+    Path currentPath;
     float timeSinceJunction;
     const float timeSinceJunctionThreshold = 1.0;
 };

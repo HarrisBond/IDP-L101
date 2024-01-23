@@ -1,45 +1,54 @@
 #include "Path.h"
 #include <Arduino.h>
+#include "../Globals.h"
+#include ".//Queue/Queue.h"
 
-Path::Path() : path(sizeof(Step), 20, FIFO, false){
+Path::Path() : path(20){
+    Serial.println("initialized path, count = " + String(path.GetCount()));
+    Serial.flush();
 }
 
 void Path::AddStep(Step newStep){
-    path.push(&newStep);
+    path.Push(newStep);
 }
 
 void Path::SetPath(Step steps[], int numSteps){
-    path.flush();
+    path.Flush();
+    Serial.println("steps & returns " + String(int(&steps)));
     Serial.print("Setting path, count = " + String(numSteps) + "\n");
     Serial.flush();
     for (int i = 0; i < numSteps; i++){
-        path.push(&steps[i]);
+        Serial.println("  " + String(steps[i]));
+        Serial.flush();
+        path.Push(steps[i]);
     }
 }
 
 Step Path::GetNextStep(){
-    Step next;
-    if (!path.pop(&next)){
-        return Step::null;
-    }
-    return next;
+    // Step next;
+    // if (!path.Pop()){
+    //     return Step::null;
+    // }
+    // return next;
+    return path.Pop();
 }
 
 Step Path::GetCurrentStep(){
-    Step current;
-    if (!path.peek(&current)){
-        return Step::null;
-    }
-    return current;
+    // Step current;
+    // if (!path.Peek(&current)){
+    //     return Step::null;
+    // }
+    // return current;
+    return path.Peek();
 }
 
 void Path::PrintPath(){
-    Serial.print("  printing path (count = " + String(path.getCount()) + "): \n");
+    Serial.print("  printing path (count = " + String(path.GetCount()) + "): \n");
     Serial.flush();
-    for (unsigned int i = 0; i < path.getCount(); i++){
-        Step currentStep;
-        path.peekIdx(&currentStep, i);
-        Serial.println("      " + String(currentStep));
+    for (int i = 0; i < path.GetCount(); i++){
+        // Step currentStep;
+        // path.PeekAt(&currentStep, i);
+        Serial.println("      " + String(path.PeekAt(i)));
         Serial.flush();
     }
 }

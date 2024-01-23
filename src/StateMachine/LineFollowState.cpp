@@ -12,14 +12,15 @@ LineFollowState::LineFollowState() : State() {
 
 void LineFollowState::EnterState(StateMachine* parentMachine){
     //initialization
-    Sequencer::GetNextPath(BlockType::empty, currentPath);
     timeSinceJunction = 0.0;
-    Serial.println("Hello from the Line Follow State, current step is " + String(currentPath->GetCurrentStep()));
+    Serial.println("Enter state called on line follow state");
+    Sequencer::GetNextPath(BlockType::empty, &currentPath);
+    Serial.println("Current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
 }
 
 void LineFollowState::Update(StateMachine* parentMachine) {
-    Serial.println("Update fron the line follow state, current step is " + String(currentPath->GetCurrentStep()));
+    Serial.println("Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
     timeSinceJunction += Time::GetDeltaTime();
 
@@ -34,15 +35,15 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         IO::Motors::ForwardRight();//clockwise
     } else if (left && right){
         //t junction
-        if (currentPath->GetCurrentStep() == Step::forwardLeft){
+        if (currentPath.GetCurrentStep() == Step::forwardLeft){
             IO::Motors::ForwardLeft();
-        } else if (currentPath->GetCurrentStep() == Step::forwardRight){
+        } else if (currentPath.GetCurrentStep() == Step::forwardRight){
             IO::Motors::ForwardRight();
         }
         if (timeSinceJunction > timeSinceJunctionThreshold){
             //new junction detected
             // Step nextStep = currentPath->GetNextStep();
-            currentPath->GetNextStep();
+            currentPath.GetNextStep();
             timeSinceJunction = 0.0;
         }
     } else {

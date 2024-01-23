@@ -1,4 +1,6 @@
 #include <Arduino.h>
+// #include "avr8-stub.h"
+// #include "app_api.h"
 #include "IO.h"
 #include "StateMachine/LineFollowState.h"
 #include "StateMachine/StateMachine.h"
@@ -7,12 +9,13 @@
 StateMachine* stateMachine;
 
 void setup() {
+  // debug_init();
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600); 
+  while (!Serial) yield();
   Serial.println("Serial working, initializing");
   stateMachine = new StateMachine();
-  // while (!Serial) yield();
   Sequencer::Initialize();
   stateMachine->ChangeState(LineFollowState::GetInstance());
 }

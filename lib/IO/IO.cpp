@@ -4,11 +4,10 @@
 
 void IO::LEDs::IndicateFoamBlock(){
     Serial.println("libraries work!");
-    Serial.flush();
 }
 
 void IO::Motors::SetRelativeSpeeds(float linear, float angular){
-    // Serial.print("motors speeds set to " + String(linear) + ", " + String(angular) + "\n");
+    Serial.print("motors speeds set to " + String(linear) + ", " + String(angular) + "\n");
 }
 
 void IO::Motors::ForwardLeft(){

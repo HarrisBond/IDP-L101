@@ -1,7 +1,6 @@
 #include "Node.h"
 
 
-
 Node::Node(WayPoint _waypoint){
     waypoint = _waypoint;
     nextIfSolid = nullptr;
