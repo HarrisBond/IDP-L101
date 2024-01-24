@@ -18,7 +18,7 @@ void Path::SetPath(Step steps[], int numSteps){
     Serial.print("Setting path, count = " + String(numSteps) + "\n");
     Serial.flush();
     for (int i = 0; i < numSteps; i++){
-        Serial.println("  " + String(steps[i]));
+        Serial.println("  path adding " + String(steps[i]) + " to queue");
         Serial.flush();
         path.Push(steps[i]);
     }
@@ -27,7 +27,7 @@ void Path::SetPath(Step steps[], int numSteps){
 Step Path::GetNextStep(){
     // Step next;
     // if (!path.Pop()){
-    //     return Step::null;
+    //     return Step::nullStep;
     // }
     // return next;
     return path.Pop();
@@ -36,7 +36,7 @@ Step Path::GetNextStep(){
 Step Path::GetCurrentStep(){
     // Step current;
     // if (!path.Peek(&current)){
-    //     return Step::null;
+    //     return Step::nullStep;
     // }
     // return current;
     return path.Peek();

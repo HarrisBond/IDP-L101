@@ -11,36 +11,36 @@ void Sequencer::Initialize(){
     for (unsigned int i = 0; i < sizeof(pathLUT) / sizeof(pathLUT[0]); i++){
         for (unsigned int j = 0; j < sizeof(pathLUT[0]) / sizeof(pathLUT[0][0]); j++){
             for (unsigned int k = 0; k < sizeof(pathLUT[0][0]) / sizeof(pathLUT[0][0][0]); k++){
-                pathLUT[i][j][k] = Step::null;
+                pathLUT[i][j][k] = Step::nullStep;
             }
         }
     }
     // return;
     //initialize sequence tree
     //should go start, resA, green/red, resB, green/red, end
-    Node startNode(WayPoint::start);
-    currentNode = &startNode;
+    Node* startNode = new Node(WayPoint::start);
+    currentNode = startNode;
 
-    Node resA(WayPoint::resA);
-    currentNode->SetNextIfEmpty(&resA);
+    Node* resA = new Node(WayPoint::resA);
+    currentNode->SetNextIfEmpty(resA);
 
-    Node redSolidA(WayPoint::redSolid);
-    Node greenFoamA(WayPoint::greenFoam);
-    resA.SetNextIfSolid(&redSolidA);
-    resA.SetNextIfFoam(&greenFoamA);
+    Node* redSolidA = new Node(WayPoint::redSolid);
+    Node* greenFoamA = new Node(WayPoint::greenFoam);
+    resA->SetNextIfSolid(redSolidA);
+    resA->SetNextIfFoam(greenFoamA);
 
-    Node resB(WayPoint::resB);
-    redSolidA.SetNextIfEmpty(&resB);
-    greenFoamA.SetNextIfEmpty(&resB);
+    Node* resB = new Node(WayPoint::resB);
+    redSolidA->SetNextIfEmpty(resB);
+    greenFoamA->SetNextIfEmpty(resB);
 
-    Node redSolidB(WayPoint::redSolid);
-    Node greenFoamB(WayPoint::greenFoam);
-    resB.SetNextIfSolid(&redSolidB);
-    resB.SetNextIfFoam(&greenFoamB);
+    Node* redSolidB = new Node(WayPoint::redSolid);
+    Node* greenFoamB = new Node(WayPoint::greenFoam);
+    resB->SetNextIfSolid(redSolidB);
+    resB->SetNextIfFoam(greenFoamB);
 
-    Node end(WayPoint::start);
-    redSolidB.SetNextIfEmpty(&end);
-    greenFoamB.SetNextIfEmpty(&end);
+    Node* end = new Node(WayPoint::start);
+    redSolidB->SetNextIfEmpty(end);
+    greenFoamB->SetNextIfEmpty(end);
 
     //all required paths are hard coded here and added to the lookup table
     //paths should only be added where the start waypoint is before the end in the waypoint enum

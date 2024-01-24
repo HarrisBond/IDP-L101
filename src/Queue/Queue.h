@@ -12,8 +12,8 @@ class Queue{
         int GetCount();
     private:
         Step* steps;
-        Step* front;
-        Step* back;
+        int front;
+        int back;
         int maxSize;
         int stepCount;
 };
