@@ -14,7 +14,7 @@ void Path::AddStep(Step newStep){
 
 void Path::SetPath(Step steps[], int numSteps){
     path.Flush();
-    Serial.println("steps & returns " + String(int(&steps)));
+    // Serial.println("steps & returns " + String(int(&steps)));
     Serial.print("Setting path, count = " + String(numSteps) + "\n");
     Serial.flush();
     for (int i = 0; i < numSteps; i++){

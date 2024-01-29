@@ -5,6 +5,7 @@ Node* Sequencer::currentNode = nullptr;
 Step Sequencer::pathLUT[5][5][MAX_PATH_LENGTH];
 
 void Sequencer::Initialize(){
+    // pathLUT = new Step[5][5][MAX_PATH_LENGTH];
     Serial.println(String(int(sizeof(pathLUT) / sizeof(pathLUT[0]))));
     Serial.println(String(int(sizeof(pathLUT[0]) / sizeof(pathLUT[0][0]))));
     Serial.println(String(int(sizeof(pathLUT[0][0]) / sizeof(pathLUT[0][0][0]))));
@@ -46,7 +47,7 @@ void Sequencer::Initialize(){
     //paths should only be added where the start waypoint is before the end in the waypoint enum
     //the corresponding reverse paths can then be generated and filled in algorithmically by 
     //iterating over the forward path backwards and reversing all turns.
-    Step start_resA[] = {Step::forwardLeft, Step::forwardRight, Step::forwardRight};
+    Step start_resA[] = {Step::forwardLeft, Step::forwardRight, Step::forwardBlock};
     SetPathLUT(WayPoint::start, WayPoint::resA, start_resA, sizeof(start_resA) / sizeof(start_resA[0]));
     Step* start_resA_from_LUT = pathLUT[WayPoint::start][WayPoint::resA];
     Serial.println("start to resA path: " + String(start_resA_from_LUT[0]) + ", " + String(start_resA_from_LUT[1]) + ", " + String(start_resA_from_LUT[2]) + ", " + String(start_resA_from_LUT[3]));
@@ -59,7 +60,7 @@ void Sequencer::GetNextPath(BlockType type, Path* path){
 
     //now need to get path from these start and end points
     Step* pathArray = GetPath(currentWayPoint, nextWayPoint);
-    Serial.println("pathArray & returns " + String(int(&pathArray)));
+    // Serial.println("pathArray & returns " + String(int(&pathArray)));
     Serial.println("pathArray[0] = " + String(pathArray[0]));Serial.flush();
     Serial.println("pathArray[1] = " + String(pathArray[1]));Serial.flush();
     Serial.println("pathArray[2] = " + String(pathArray[2]));Serial.flush();

@@ -12,7 +12,9 @@ namespace IO {
         //set left and right motor speeds to a sum of common mode (for linear) and difference mode (for turning).
         void SetRelativeSpeeds(float linear, float angular);
         void ForwardLeft();
+        void Left();
         void ForwardRight();
+        void Right();
         void Forward();
 
         //should just call SetRelativeSpeeds(0,0)
@@ -27,11 +29,15 @@ namespace IO {
 
     namespace Sensors{
         //returns 0 when detecting black, 1 when detecting white
-        bool LineSenseLeft();
-        bool LineSenseRight();
+        // bool LineSenseLeft();
+        // bool LineSenseRight();
+        void LineSense(bool& outerLeft, bool& outerRight, bool& innerLeft, bool& innerRight);
 
-        //return distance to block in mm. This can either use the ultrasount or TOF module.
+        //get distance to block in mm. This can either use the ultrasount or TOF module.
         //maybe we could measure roughness by slowly rotating the robot while collecting TOF data to differentiate between solid and foam blocks?
-        float GetBlockDistance();
+        void GetBlockDistance(float& blockDistance);
+
+        bool PlatformSwitchPressed();
+
     }
 }

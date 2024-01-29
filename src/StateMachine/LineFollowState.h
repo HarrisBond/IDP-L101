@@ -14,4 +14,7 @@ private:
     Path currentPath;
     float timeSinceJunction;
     const float timeSinceJunctionThreshold = 1.0;
+    void LineFollow(Step currentStep);
+    void HandleBothOuters(Step currentSteo);
+    void HandleBothInners(Step currentSteo);
 };
