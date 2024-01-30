@@ -18,7 +18,6 @@ void setup() {
   while (!Serial) yield();
   Serial.println("Serial working, initializing");Serial.flush();
   time = new Time();
-  Serial.println("time constructor succesful");Serial.flush();
   stateMachine = new StateMachine();
   Sequencer::Initialize();
   stateMachine->ChangeState(LineFollowState::GetInstance());
@@ -34,5 +33,5 @@ void loop() {
   // delay(1000);    
   time->Update();
   stateMachine->Update();
-  delay(1000);                       // wait for a second
+  // delay(1000);                       // wait for a second
 }

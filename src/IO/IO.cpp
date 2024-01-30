@@ -4,46 +4,39 @@
 
 
 void IO::LEDs::IndicateFoamBlock(){
-    Serial.println("libraries work!");
 }
 
 void IO::Motors::SetRelativeSpeeds(float linear, float angular){
-    Serial.println("        motors speeds set to " + String(linear) + ", " + String(angular));
+    // Serial.println("        motors speeds set to " + String(linear) + ", " + String(angular));
 }
 
 void IO::Motors::ForwardLeft(){
-    Serial.println("        Forward Left");
-    Serial.flush();
+    // Serial.println("        Forward Left");Serial.flush();
     IO::Motors::SetRelativeSpeeds(IO::Motors::lineFollowLinearSpeed, IO::Motors::lineFollowAngularSpeed);
 }
 
 void IO::Motors::Left(){
-    Serial.println("        Left");
-    Serial.flush();
+    // Serial.println("        Left");Serial.flush();
     IO::Motors::SetRelativeSpeeds(0.0, IO::Motors::lineFollowAngularSpeed);
 }
 
 void IO::Motors::ForwardRight(){
-    Serial.println("        Forward Right");
-    Serial.flush();
+    // Serial.println("        Forward Right");Serial.flush();
     IO::Motors::SetRelativeSpeeds(IO::Motors::lineFollowLinearSpeed, -IO::Motors::lineFollowAngularSpeed);
 }
 
 void IO::Motors::Right(){
-    Serial.println("        Right");
-    Serial.flush();
+    // Serial.println("        Right");Serial.flush();
     IO::Motors::SetRelativeSpeeds(0.0, -IO::Motors::lineFollowAngularSpeed);
 }
 
 void IO::Motors::Forward(){
-    Serial.println("        Forward");
-    Serial.flush();
+    // Serial.println("        Forward");Serial.flush();
     IO::Motors::SetRelativeSpeeds(IO::Motors::lineFollowLinearSpeed, 0.0);
 }
 
 void IO::Motors::Stop(){
-    Serial.println("        Motors stopped");
-    Serial.flush();
+    // Serial.println("        Motors stopped");Serial.flush();
 }
 
 void IO::Motors::SetGripperServoAngle(float angle){

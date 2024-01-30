@@ -1,5 +1,6 @@
 #include "StateMachine.h"
 #include "BlockPickupState.h"
+#include "BlockDropState.h"
 #include <Arduino.h>
 #include "../IO/IO.h"
 #include "../Paths/Path.h"
@@ -8,22 +9,22 @@
 #include "../Globals.h"
 
 LineFollowState::LineFollowState() : State() {
-    Serial.println("line follow state constructor");
-    Serial.flush();
+    timeSinceJunction = 0.0;
+    // Serial.println("line follow state constructor");
+    // Serial.flush();
 }
 
 void LineFollowState::EnterState(StateMachine* parentMachine){
     //initialization
     timeSinceJunction = 0.0;
-    Sequencer::GetNextPath(BlockType::empty, &currentPath);
-    Serial.println("test string");
+    Sequencer::GetNextPath(&currentPath);
     Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
 }
 
 void LineFollowState::Update(StateMachine* parentMachine) {
-    Serial.println("    Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
-    Serial.flush();
+    // Serial.println("    Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
+    // Serial.flush();
     timeSinceJunction += time->GetDeltaTime();
 
     //need to check left and right sensors and turn accordingly.
@@ -42,14 +43,17 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         float blockDistance;
         IO::Sensors::GetBlockDistance(blockDistance);
         if (blockDistance < BLOCK_DISTANCE_THRESHOLD){
-            Serial.println("Block detected");Serial.flush();
+            Serial.println("    Block detected");Serial.flush();
+            parentMachine->ChangeState(BlockPickupState::GetInstance());
         }
-        parentMachine->ChangeState(BlockPickupState::GetInstance());
         // BlockPickupState::GetInstance();
     }
 
     if (currentStep == Step::forwardPlatform){
         //check platform distance sensor, enter block drop state if needed
+        if (IO::Sensors::PlatformSwitchPressed()){
+            parentMachine->ChangeState(BlockDropState::GetInstance());
+        }
     }
 }
 
@@ -82,7 +86,6 @@ void LineFollowState::LineFollow(Step currentStep){
 }
 
 void LineFollowState::HandleBothOuters(Step currentStep){
-    Serial.println("Both outers");Serial.flush();
     if (currentStep == Step::forwardBlock || currentStep == Step::forwardPlatform){
         IO::Motors::Forward();
         return;
@@ -96,8 +99,9 @@ void LineFollowState::HandleBothOuters(Step currentStep){
     if (timeSinceJunction > timeSinceJunctionThreshold){
         //new junction detected
         // Step nextStep = currentPath->GetNextStep();
-        Serial.println("T junction found");Serial.flush();
+        Serial.println("    T junction found");Serial.flush();
         currentPath.GetNextStep();
+        currentStep = currentPath.GetCurrentStep();
         timeSinceJunction = 0.0;
     }
 }
@@ -111,8 +115,8 @@ void LineFollowState::HandleBothInners(Step currentStep){
 }
 
 void LineFollowState::ExitState(StateMachine* parentMachine) {
-    Serial.println("Exiting the line follow state");
-    Serial.flush();
+    // Serial.println("Exiting the line follow state");
+    // Serial.flush();
 }
 
 //this returns a singleton instance of the line follow state. A function like this needs to be included in each concrete state.

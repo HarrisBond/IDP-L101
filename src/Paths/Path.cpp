@@ -4,8 +4,8 @@
 #include ".//Queue/Queue.h"
 
 Path::Path() : path(20){
-    Serial.println("initialized path, count = " + String(path.GetCount()));
-    Serial.flush();
+    // Serial.println("initialized path, count = " + String(path.GetCount()));
+    // Serial.flush();
 }
 
 void Path::AddStep(Step newStep){
@@ -15,11 +15,11 @@ void Path::AddStep(Step newStep){
 void Path::SetPath(Step steps[], int numSteps){
     path.Flush();
     // Serial.println("steps & returns " + String(int(&steps)));
-    Serial.print("Setting path, count = " + String(numSteps) + "\n");
-    Serial.flush();
-    for (int i = 0; i < numSteps; i++){
-        Serial.println("  path adding " + String(steps[i]) + " to queue");
-        Serial.flush();
+    // Serial.print("Setting path, count = " + String(numSteps) + "\n");
+    // Serial.flush();
+    for (int i = 0; i < numSteps && steps[i] != Step::nullStep; i++){
+        // Serial.println("  path adding " + String(steps[i]) + " to queue");
+        // Serial.flush();
         path.Push(steps[i]);
     }
 }
@@ -45,12 +45,14 @@ Step Path::GetCurrentStep(){
 void Path::PrintPath(){
     Serial.print("  printing path (count = " + String(path.GetCount()) + "): \n");
     Serial.flush();
+    Serial.print("      ");
     for (int i = 0; i < path.GetCount(); i++){
         // Step currentStep;
         // path.PeekAt(&currentStep, i);
-        Serial.println("      " + String(path.PeekAt(i)));
+        Serial.print(String(path.PeekAt(i)) + "  ");
         Serial.flush();
     }
+    Serial.print("\n");
 }
 
 

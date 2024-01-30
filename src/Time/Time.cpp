@@ -3,10 +3,8 @@
 
 Time::Time() {
 	//initialise
-	Serial.println("time constructor called");Serial.flush();
 	previousTime = millis();
 	deltaTime = 0.0;
-	Serial.println("End of time constructor");Serial.flush();
 }
 
 void Time::Update() {
