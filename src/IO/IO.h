@@ -1,4 +1,8 @@
 #pragma once
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_MotorShield.h>
+#include "utility/Adafruit_MS_PWMServoDriver.h"
 
 namespace IO {
     namespace LEDs{
@@ -6,26 +10,28 @@ namespace IO {
         void IndicateSolidBlock();
     }
 
-    namespace Motors{
-        //linear speed, +ve is forwards, -ve is backwards. should be in range -1 to 1
-        //angular speed, +ve is anticlockwise, -ve is clockwise (for right hand rule angular velocity reasons)
-        //set left and right motor speeds to a sum of common mode (for linear) and difference mode (for turning).
-        void SetRelativeSpeeds(float linear, float angular);
-        void ForwardLeft();
-        void Left();
-        void ForwardRight();
-        void Right();
-        void Forward();
+    class Motors
+    {
+        public:
+            Adafruit_MotorShield AFMS;
+            Adafruit_DCMotor *rightMotor;
+            Adafruit_DCMotor *leftMotor;
+            Motors();
+            void Initialise();
+            void SetRelativeSpeeds(float linear, float angular);
+            void ForwardLeft();
+            void ForwardRight();
+            void Left();
+            void Right();
+            void Forward();
+            void Stop();
+            void SetGripperServoAngle(float angle);
+            void SetArmServoAngle(float angle);
+            
+            const float lineFollowLinearSpeed = 1.0;
+            const float lineFollowAngularSpeed = 0.9;
+    };
 
-        //should just call SetRelativeSpeeds(0,0)
-        void Stop();
-
-        //these should both include limits so you can't accidentally tell the robot to break itself
-        void SetGripperServoAngle(float angle);
-        void SetArmServoAngle(float angle);
-        const float lineFollowLinearSpeed = 0.5;
-        const float lineFollowAngularSpeed = 0.5;
-    }
 
     namespace Sensors{
         //returns 0 when detecting black, 1 when detecting white

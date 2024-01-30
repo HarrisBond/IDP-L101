@@ -9,6 +9,7 @@
 
 StateMachine* stateMachine;
 Time* time;
+IO::Motors* motorController;
 
 void setup() {
   // debug_init();
@@ -18,6 +19,8 @@ void setup() {
   while (!Serial) yield();
   Serial.println("Serial working, initializing");Serial.flush();
   time = new Time();
+  motorController = new IO::Motors();
+  motorController->initialize();
   stateMachine = new StateMachine();
   Sequencer::Initialize();
   stateMachine->ChangeState(LineFollowState::GetInstance());

@@ -1,5 +1,6 @@
 #pragma once
 #include "Time/Time.h"
+#include "IO/IO.h"
 
 //forward left/ right follows a line until a t junction, where it turns left/ right respectively
 //forward block follows a line until a block, at which point it stops and picks it up
@@ -14,5 +15,6 @@ enum WayPoint {start, resA, resB, redSolid, greenFoam};
 #define INNER_RIGHT_LINE_SENSOR_PIN 4
 
 extern Time* time;
+extern IO::Motors* motorController;
 #define BLOCK_DISTANCE_THRESHOLD 50
 
