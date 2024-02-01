@@ -17,6 +17,7 @@ LineFollowState::LineFollowState() : State() {
 void LineFollowState::EnterState(StateMachine* parentMachine){
     //initialization
     timeSinceJunction = 0.0;
+    nextStepTimer = -1.0;
     Sequencer::GetNextPath(&currentPath);
     Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
@@ -25,8 +26,15 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
 void LineFollowState::Update(StateMachine* parentMachine) {
     // Serial.println("    Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
     // Serial.flush();
-    timeSinceJunction += time->GetDeltaTime();
-
+    float deltaTime = time->GetDeltaTime();
+    timeSinceJunction += deltaTime;
+    float prevNextStepTimer = nextStepTimer;
+    nextStepTimer -= deltaTime;
+    if (sign(nextStepTimer) != sign(prevNextStepTimer)){
+        currentPath.GetNextStep();
+        // currentStep = currentPath.GetCurrentStep();
+    }
+    // Serial.println(String());
     //need to check left and right sensors and turn accordingly.
     
     //if both sensors detect line, we are at a junction and need to choose turn direction
@@ -58,6 +66,7 @@ void LineFollowState::Update(StateMachine* parentMachine) {
 }
 
 void LineFollowState::LineFollow(Step currentStep){
+    // Serial.println(String(currentStep));
     // bool left = IO::Sensors::LineSenseLeft();
     // bool right = IO::Sensors::LineSenseRight();
     bool outerLeft, outerRight, innerLeft, innerRight;
@@ -66,51 +75,52 @@ void LineFollowState::LineFollow(Step currentStep){
     // Serial.flush();
     
     if (outerLeft && !outerRight){
-        IO::Motors::Left();//anticlockwise
+        motorController->Left();//anticlockwise
     } else if (!outerLeft && outerRight){
-        IO::Motors::Right();//clockwise
+        motorController->Right();//clockwise
     } else if (outerLeft && outerRight){
         HandleBothOuters(currentStep);
     } else {
         if (innerLeft && !innerRight){
-            IO::Motors::ForwardLeft();//anticlockwise
+            motorController->ForwardLeft();//anticlockwise
         } else if (!innerLeft && innerRight){
-            IO::Motors::ForwardRight();//clockwise
+            motorController->ForwardRight();//clockwise
         } else if (innerLeft && innerRight){
             //should always turn left at junctions
             HandleBothInners(currentStep);
         } else {
-            IO::Motors::Forward();
+            motorController->Forward();
         }
     }
 }
 
 void LineFollowState::HandleBothOuters(Step currentStep){
     if (currentStep == Step::forwardBlock || currentStep == Step::forwardPlatform){
-        IO::Motors::Forward();
+        motorController->Forward();
         return;
     }
     //t junction
     if (currentStep == Step::forwardLeft){
-        IO::Motors::Left();
+        motorController->Left();
     } else if (currentStep == Step::forwardRight){
-        IO::Motors::Right();
+        motorController->Right();
     }
     if (timeSinceJunction > timeSinceJunctionThreshold){
         //new junction detected
         // Step nextStep = currentPath->GetNextStep();
         Serial.println("    T junction found");Serial.flush();
-        currentPath.GetNextStep();
-        currentStep = currentPath.GetCurrentStep();
+        // currentPath.GetNextStep();
+        // currentStep = currentPath.GetCurrentStep();
         timeSinceJunction = 0.0;
+        nextStepTimer = timeSinceJunctionThreshold;
     }
 }
 
 void LineFollowState::HandleBothInners(Step currentStep){
     if (currentStep == Step::forwardLeft){
-        IO::Motors::ForwardLeft();
+        motorController->ForwardLeft();
     } else if (currentStep == Step::forwardRight){
-        IO::Motors::ForwardRight();
+        motorController->ForwardRight();
     }
 }
 
@@ -124,4 +134,8 @@ void LineFollowState::ExitState(StateMachine* parentMachine) {
 State& LineFollowState::GetInstance() {
     static LineFollowState singleton;
     return singleton;
+}
+
+int LineFollowState::sign(float x){
+    return x < 0 ? 0 : 1;
 }

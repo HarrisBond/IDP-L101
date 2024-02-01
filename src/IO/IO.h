@@ -16,7 +16,6 @@ namespace IO {
             Adafruit_MotorShield AFMS;
             Adafruit_DCMotor *rightMotor;
             Adafruit_DCMotor *leftMotor;
-            Motors();
             void Initialise();
             void SetRelativeSpeeds(float linear, float angular);
             void ForwardLeft();
@@ -27,7 +26,6 @@ namespace IO {
             void Stop();
             void SetGripperServoAngle(float angle);
             void SetArmServoAngle(float angle);
-            
             const float lineFollowLinearSpeed = 1.0;
             const float lineFollowAngularSpeed = 0.9;
     };

@@ -24,7 +24,7 @@ void IO::Motors::Initialise(){
 }
 
 void IO::Motors::SetRelativeSpeeds(float linear, float angular){
-    Serial.println("motors speeds set to " + String(linear) + ", " + String(angular) + "\n");
+    // Serial.println("motors speeds set to " + String(linear) + ", " + String(angular) + "\n");
     float left = linear - angular;
     float right = linear + angular;
     leftMotor->setSpeed(int(constrain(abs(left * 255), 0, 255)));
@@ -49,7 +49,7 @@ void IO::Motors::ForwardLeft(){
 
 void IO::Motors::Left(){
     // Serial.println("        Left");Serial.flush();
-    SetRelativeSpeeds(0.0, lineFollowAngularSpeed);
+    SetRelativeSpeeds(lineFollowLinearSpeed * 0.2, lineFollowAngularSpeed);
 }
 
 void IO::Motors::ForwardRight(){
@@ -59,7 +59,7 @@ void IO::Motors::ForwardRight(){
 
 void IO::Motors::Right(){
     // Serial.println("        Right");Serial.flush();
-    SetRelativeSpeeds(0.0, -lineFollowAngularSpeed);
+    SetRelativeSpeeds(lineFollowLinearSpeed * 0.2, -lineFollowAngularSpeed);
 }
 
 void IO::Motors::Forward(){
@@ -80,14 +80,14 @@ void IO::Motors::SetArmServoAngle(float angle){
 }
 
 void IO::Sensors::LineSense(bool& outerLeft, bool& outerRight, bool& innerLeft, bool& innerRight){
-    // outerLeft = digitalRead(OUTER_LEFT_LINE_SENSOR_PIN);
-    // outerRight = digitalRead(OUTER_RIGHT_LINE_SENSOR_PIN);
-    // innerLeft = digitalRead(INNER_LEFT_LINE_SENSOR_PIN);
-    // innerRight = digitalRead(INNER_RIGHT_LINE_SENSOR_PIN);
-    outerLeft = (random(100) / 100.0) < 0.5;
-    outerRight = (random(100) / 100.0) < 0.5;
-    innerLeft = (random(100) / 100.0) < 0.5;
-    innerRight = (random(100) / 100.0) < 0.5;
+    outerLeft = digitalRead(OUTER_LEFT_LINE_SENSOR_PIN);
+    outerRight = digitalRead(OUTER_RIGHT_LINE_SENSOR_PIN);
+    innerLeft = digitalRead(INNER_LEFT_LINE_SENSOR_PIN);
+    innerRight = digitalRead(INNER_RIGHT_LINE_SENSOR_PIN);
+    // outerLeft = (random(100) / 100.0) < 0.5;
+    // outerRight = (random(100) / 100.0) < 0.5;
+    // innerLeft = (random(100) / 100.0) < 0.5;
+    // innerRight = (random(100) / 100.0) < 0.5;
     return;
 }
 
