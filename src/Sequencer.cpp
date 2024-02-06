@@ -26,19 +26,27 @@ void Sequencer::Initialize(){
     // currentNode = startNode;
 
     Node* resA = new Node(WayPoint::resA);
+    resA->SetNextAngleIfSolid(-90);
+    resA->SetNextAngleIfFoam(90);
     currentNode->SetNextIfEmpty(resA);
 
     Node* redSolidA = new Node(WayPoint::redSolid);
+    redSolidA->SetNextAngleIfEmpty(180);
     Node* greenFoamA = new Node(WayPoint::greenFoam);
+    greenFoamA->SetNextAngleIfEmpty(180);
     resA->SetNextIfSolid(redSolidA);
     resA->SetNextIfFoam(greenFoamA);
 
     Node* resB = new Node(WayPoint::resB);
+    resB->SetNextAngleIfSolid(90);
+    resB->SetNextAngleIfFoam(-90);
     redSolidA->SetNextIfEmpty(resB);
     greenFoamA->SetNextIfEmpty(resB);
 
     Node* redSolidB = new Node(WayPoint::redSolid);
+    redSolidB->SetNextAngleIfEmpty(180);
     Node* greenFoamB = new Node(WayPoint::greenFoam);
+    greenFoamB->SetNextAngleIfEmpty(180);
     resB->SetNextIfSolid(redSolidB);
     resB->SetNextIfFoam(greenFoamB);
 
@@ -55,7 +63,7 @@ void Sequencer::Initialize(){
     // SetPathLUT(WayPoint::start, WayPoint::resA, start_resA, sizeof(start_resA) / sizeof(start_resA[0]));
     // Step* start_resA_from_LUT = pathLUT[WayPoint::start][WayPoint::resA];
     // Serial.println("start to resA path: " + String(start_resA_from_LUT[0]) + ", " + String(start_resA_from_LUT[1]) + ", " + String(start_resA_from_LUT[2]) + ", " + String(start_resA_from_LUT[3]));
-} 
+}
 
 void Sequencer::GetNextPath(Path* path){
     WayPoint currentWayPoint = currentNode->GetWayPoint();
@@ -87,6 +95,10 @@ Step* Sequencer::GetPath(WayPoint start, WayPoint end){
 
 void Sequencer::SetBlockType(BlockType newType){
     currentBlockType = newType;
+}
+
+int Sequencer::GetNextTurnAngle(){
+    return currentNode->GetNextTurnAngle(currentBlockType);
 }
 
 void Sequencer::SetUpPathLUT(){

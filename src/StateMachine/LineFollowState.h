@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Paths/Path.h"
+// #include "LineFollowing.h"
 
 
 class LineFollowState : public State {
@@ -13,7 +14,7 @@ public:
 private:
     Path currentPath;
     float timeSinceJunction;
-    const float timeSinceJunctionThreshold = 3000.0;
+    const float timeSinceJunctionThreshold = 2000.0;
     void LineFollow(Step currentStep);
     void HandleBothOuters(Step currentSteo);
     void HandleBothInners(Step currentSteo);

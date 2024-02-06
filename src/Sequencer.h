@@ -10,6 +10,8 @@ class Sequencer{
         static void Initialize();
         static void GetNextPath(Path* path);
         static void SetBlockType(BlockType newType);
+        static void SetNextTurnAngle(int newTurnAngle);
+        static int GetNextTurnAngle();
     private:
         static Node* currentNode;
         static Step* GetPath(WayPoint start, WayPoint end);
@@ -17,4 +19,5 @@ class Sequencer{
         static void SetUpPathLUT();
         static void SetPathLUT(WayPoint start, WayPoint end, Step* path);
         static BlockType currentBlockType;
+        static int nextTurnAngle;
 };

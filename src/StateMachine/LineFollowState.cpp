@@ -16,7 +16,7 @@ LineFollowState::LineFollowState() : State() {
 
 void LineFollowState::EnterState(StateMachine* parentMachine){
     //initialization
-    timeSinceJunction = 0.0;
+    timeSinceJunction = 5000.0;
     nextStepTimer = -1.0;
     Sequencer::GetNextPath(&currentPath);
     Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
@@ -34,6 +34,12 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         currentPath.GetNextStep();
         // currentStep = currentPath.GetCurrentStep();
     }
+
+    // int turnAngle = TurnAngleFromTurnStep(currentPath.GetCurrentStep());
+    // if (turnAngle != 0){
+    //     Sequencer::SetNextTurnAngle(turnAngle);
+    //     currentPath.GetNextStep();
+    // }
     // Serial.println(String());
     //need to check left and right sensors and turn accordingly.
     
@@ -95,6 +101,7 @@ void LineFollowState::LineFollow(Step currentStep){
 }
 
 void LineFollowState::HandleBothOuters(Step currentStep){
+    // Serial.println("both outers");
     if (currentStep == Step::forwardBlock || currentStep == Step::forwardPlatform){
         motorController->Forward();
         return;

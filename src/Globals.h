@@ -16,5 +16,5 @@ enum WayPoint {start, resA, resB, redSolid, greenFoam};
 
 extern Time* time;
 extern IO::Motors* motorController;
-#define BLOCK_DISTANCE_THRESHOLD 50
+#define BLOCK_DISTANCE_THRESHOLD 0.1
 

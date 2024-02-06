@@ -49,7 +49,7 @@ void IO::Motors::ForwardLeft(){
 
 void IO::Motors::Left(){
     // Serial.println("        Left");Serial.flush();
-    SetRelativeSpeeds(lineFollowLinearSpeed * 0.2, lineFollowAngularSpeed);
+    SetRelativeSpeeds(lineFollowLinearSpeed * 0.3, lineFollowAngularSpeed);
 }
 
 void IO::Motors::ForwardRight(){
@@ -59,7 +59,7 @@ void IO::Motors::ForwardRight(){
 
 void IO::Motors::Right(){
     // Serial.println("        Right");Serial.flush();
-    SetRelativeSpeeds(lineFollowLinearSpeed * 0.2, -lineFollowAngularSpeed);
+    SetRelativeSpeeds(lineFollowLinearSpeed * 0.3, -lineFollowAngularSpeed);
 }
 
 void IO::Motors::Forward(){
@@ -96,7 +96,7 @@ void IO::Sensors::GetBlockDistance(float& blockDistance){
 }
 
 bool IO::Sensors::PlatformSwitchPressed(){
-    if (random(100) / 100.0 < 0.1){
+    if (random(100) / 100.0 < 0.001){
         return true;
     }
     return false;
