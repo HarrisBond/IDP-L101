@@ -22,7 +22,7 @@ void BlindTurnState::EnterState(StateMachine* parentMachine){
     }
     turnTimerMilliseconds = turnAngle * 17;
     // motorController->Left();
-    motorController->SetRelativeSpeeds(-0.2, 1.0);
+    // motorController->SetRelativeSpeeds(-0.2, 1.0);
 }
 
 void BlindTurnState::Update(StateMachine* parentMachine){
