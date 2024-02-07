@@ -5,9 +5,13 @@
 Node* Sequencer::currentNode = nullptr;
 Step* Sequencer::pathLUT[5][5];
 BlockType Sequencer::currentBlockType = BlockType::empty;
+bool Sequencer::started = false;
+bool Sequencer::finishing = false;
 
 void Sequencer::Initialize(){
     currentBlockType = BlockType::empty;
+    started = false;
+    finishing = false;
     // pathLUT = new Step[5][5][MAX_PATH_LENGTH];
     // Serial.println(String(int(sizeof(pathLUT) / sizeof(pathLUT[0]))));
     // Serial.println(String(int(sizeof(pathLUT[0]) / sizeof(pathLUT[0][0]))));
@@ -66,16 +70,23 @@ void Sequencer::Initialize(){
     // Serial.println("start to resA path: " + String(start_resA_from_LUT[0]) + ", " + String(start_resA_from_LUT[1]) + ", " + String(start_resA_from_LUT[2]) + ", " + String(start_resA_from_LUT[3]));
 }
 
+bool Sequencer::HasStarted(){
+    return started;
+}
+
+bool Sequencer::IsFinishing(){
+    return finishing;
+}
+
 void Sequencer::GetNextPath(Path* path){
+    started = true;
     WayPoint currentWayPoint = currentNode->GetWayPoint();
-    // if (currentWayPoint == WayPoint::start){
-    //     path->SetPath(nullptr, 0);
-    //     return;
-    // }
     Node* nextNode = currentNode->GetNext(currentBlockType);
     if (nextNode == nullptr){
         path->SetPath(nullptr, 0);
         return;
+    } else if (nextNode->GetWayPoint() == WayPoint::start){
+        finishing = true;
     }
     WayPoint nextWayPoint = nextNode->GetWayPoint();
     // std::cout << "getting path from " << currentWayPoint << " to " << nextWayPoint << "\n"; 

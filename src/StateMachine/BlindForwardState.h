@@ -12,5 +12,7 @@ public:
     static State& GetInstance();
 private:
     float forwardTimerMilliseconds;
-    const float forwardTime = 500.0;
+    const float defaultForwardTime = 500.0;
+    const float startForwardTime = 2000.0;
+    const float endForwardTime = 2000.0;
 };

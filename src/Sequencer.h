@@ -12,6 +12,8 @@ class Sequencer{
         static void SetBlockType(BlockType newType);
         static void SetNextTurnAngle(int newTurnAngle);
         static int GetNextTurnAngle();
+        static bool HasStarted();
+        static bool IsFinishing();
     private:
         static Node* currentNode;
         static Step* GetPath(WayPoint start, WayPoint end);
@@ -20,4 +22,6 @@ class Sequencer{
         static void SetPathLUT(WayPoint start, WayPoint end, Step* path);
         static BlockType currentBlockType;
         static int nextTurnAngle;
+        static bool started;
+        static bool finishing;
 };
