@@ -18,6 +18,8 @@ private:
     void LineFollow(Step currentStep);
     void HandleBothOuters(Step currentSteo);
     void HandleBothInners(Step currentSteo);
+    void HandleLightFlash();
     float nextStepTimer;
+    float lightTimer;
     int sign(float x);
 };

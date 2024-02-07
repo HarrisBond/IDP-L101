@@ -2,6 +2,7 @@
 #include "BlockPickupState.h"
 #include "BlockDropState.h"
 #include "BlindForwardState.h"
+#include "FinishedState.h"x
 #include <Arduino.h>
 #include "../IO/IO.h"
 #include "../Paths/Path.h"
@@ -22,7 +23,7 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
     Sequencer::GetNextPath(&currentPath);
     if (currentPath.IsEmpty()){
         //empty path, we are done and at the start
-        parentMachine->ChangeState()
+        parentMachine->ChangeState(FinishedState::GetInstance());
     }
     Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
@@ -37,12 +38,14 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     // Serial.flush();
     float deltaTime = time->GetDeltaTime();
     timeSinceJunction += deltaTime;
+    lightTimer += deltaTime;
     float prevNextStepTimer = nextStepTimer;
     nextStepTimer -= deltaTime;
     if (sign(nextStepTimer) != sign(prevNextStepTimer)){
         currentPath.GetNextStep();
         // currentStep = currentPath.GetCurrentStep();
     }
+    HandleLightFlash();
 
     // int turnAngle = TurnAngleFromTurnStep(currentPath.GetCurrentStep());
     // if (turnAngle != 0){
@@ -121,7 +124,7 @@ void LineFollowState::HandleBothOuters(Step currentStep){
         motorController->Right();
     } else if (currentStep == Step::returnStart){
         motorController->Forward();
-        path->GetNextStep();
+        currentPath.GetNextStep();
     }
     if (timeSinceJunction > timeSinceJunctionThreshold){
         //new junction detected
@@ -131,6 +134,13 @@ void LineFollowState::HandleBothOuters(Step currentStep){
         // currentStep = currentPath.GetCurrentStep();
         timeSinceJunction = 0.0;
         nextStepTimer = timeSinceJunctionThreshold;
+    }
+}
+
+void LineFollowState::HandleLightFlash(){
+    if (lightTimer >= 500){
+        //toggle blue LED
+        lightTimer=0.0;
     }
 }
 
