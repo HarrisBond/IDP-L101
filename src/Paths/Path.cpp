@@ -14,6 +14,9 @@ void Path::AddStep(Step newStep){
 
 void Path::SetPath(Step steps[], int numSteps){
     path.Flush();
+    if (numSteps == 0 || steps == nullptr){
+        return;
+    }
     // Serial.println("steps & returns " + String(int(&steps)));
     // Serial.print("Setting path, count = " + String(numSteps) + "\n");
     // Serial.flush();
@@ -40,6 +43,10 @@ Step Path::GetCurrentStep(){
     // }
     // return current;
     return path.Peek();
+}
+
+bool Path::IsEmpty(){
+    return path.GetCount()==0;
 }
 
 void Path::PrintPath(){

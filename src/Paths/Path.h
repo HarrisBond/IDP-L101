@@ -14,6 +14,7 @@ class Path{
         void SetPath(Step steps[], int numSteps);
         Step GetNextStep();
         Step GetCurrentStep();
+        bool IsEmpty();
         void PrintPath();
     private:
         Queue path;

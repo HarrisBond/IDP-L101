@@ -1,5 +1,6 @@
 #include "Sequencer.h"
 #include <Arduino.h>
+#include "stdlib.h"
 
 Node* Sequencer::currentNode = nullptr;
 Step* Sequencer::pathLUT[5][5];
@@ -67,7 +68,15 @@ void Sequencer::Initialize(){
 
 void Sequencer::GetNextPath(Path* path){
     WayPoint currentWayPoint = currentNode->GetWayPoint();
+    // if (currentWayPoint == WayPoint::start){
+    //     path->SetPath(nullptr, 0);
+    //     return;
+    // }
     Node* nextNode = currentNode->GetNext(currentBlockType);
+    if (nextNode == nullptr){
+        path->SetPath(nullptr, 0);
+        return;
+    }
     WayPoint nextWayPoint = nextNode->GetWayPoint();
     // std::cout << "getting path from " << currentWayPoint << " to " << nextWayPoint << "\n"; 
     Serial.println("getting path from " + String(currentWayPoint) + " to " + String(nextWayPoint));
@@ -123,10 +132,10 @@ void Sequencer::SetUpPathLUT(){
     Step* resB_redSolid = new Step[5] {Step::forwardRight, Step::forwardLeft, Step::forwardPlatform, Step::nullStep};
     SetPathLUT(WayPoint::resB, WayPoint::redSolid, resB_redSolid);
 
-    Step* greenFoam_start = new Step[4] {Step::forwardRight, Step::forwardRight, Step::forwardRight, Step::nullStep};
+    Step* greenFoam_start = new Step[4] {Step::forwardRight, Step::forwardRight, Step::returnStart, Step::nullStep};
     SetPathLUT(WayPoint::greenFoam, WayPoint::start, greenFoam_start);
 
-    Step* redSolid_start = new Step[3] {Step::forwardLeft, Step::forwardLeft, Step::nullStep};
+    Step* redSolid_start = new Step[3] {Step::forwardLeft, Step::returnStart, Step::nullStep};
     SetPathLUT(WayPoint::redSolid, WayPoint::start, redSolid_start);
 }
 

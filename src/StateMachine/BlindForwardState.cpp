@@ -19,6 +19,7 @@ void BlindForwardState::Update(StateMachine* parentMachine){
     // Serial.println("    Update called on Block Drop State");Serial.flush();
     forwardTimerMilliseconds -= time->GetDeltaTime();
     if (forwardTimerMilliseconds <= 0.0){
+        motorController->Stop();
         parentMachine->ChangeState(LineFollowState::GetInstance());
     }
 }

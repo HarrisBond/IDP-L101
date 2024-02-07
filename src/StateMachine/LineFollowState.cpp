@@ -1,6 +1,7 @@
 #include "StateMachine.h"
 #include "BlockPickupState.h"
 #include "BlockDropState.h"
+#include "BlindForwardState.h"
 #include <Arduino.h>
 #include "../IO/IO.h"
 #include "../Paths/Path.h"
@@ -19,11 +20,19 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
     timeSinceJunction = 5000.0;
     nextStepTimer = -1.0;
     Sequencer::GetNextPath(&currentPath);
+    if (currentPath.IsEmpty()){
+        //empty path, we are done and at the start
+        parentMachine->ChangeState()
+    }
     Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
 }
 
 void LineFollowState::Update(StateMachine* parentMachine) {
+    Step currentStep = currentPath.GetCurrentStep();
+    if (currentStep == Step::returnStart){
+        parentMachine->ChangeState(BlindForwardState::GetInstance());
+    }
     // Serial.println("    Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
     // Serial.flush();
     float deltaTime = time->GetDeltaTime();
@@ -47,7 +56,6 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     //based on the path planning. also need to tell the state machine that a t junction has been reached.
     //this t junction will be continuously detected until we leave it, so a timer needs to be used by the
     //state machine before additional junction detections are accepted again.
-    Step currentStep = currentPath.GetCurrentStep();
     LineFollow(currentStep);
 
     //also need to check if we have reached the end of a line, eg before reaching a block or reaching the green/ red platform.
@@ -111,6 +119,9 @@ void LineFollowState::HandleBothOuters(Step currentStep){
         motorController->Left();
     } else if (currentStep == Step::forwardRight){
         motorController->Right();
+    } else if (currentStep == Step::returnStart){
+        motorController->Forward();
+        path->GetNextStep();
     }
     if (timeSinceJunction > timeSinceJunctionThreshold){
         //new junction detected

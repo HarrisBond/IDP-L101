@@ -2,7 +2,7 @@
 // #include "avr8-stub.h"
 // #include "app_api.h"
 #include "IO/IO.h"
-#include "StateMachine/LineFollowState.h"
+#include "StateMachine/BlindForwardState.h"
 #include "StateMachine/StateMachine.h"
 #include "Sequencer.h"
 #include "Globals.h"
@@ -28,7 +28,7 @@ void setup() {
   motorController->Initialise();
   stateMachine = new StateMachine();
   Sequencer::Initialize();
-  stateMachine->ChangeState(LineFollowState::GetInstance());
+  stateMachine->ChangeState(BlindForwardState::GetInstance());
 }
 
 // the loop function runs over and over again forever
