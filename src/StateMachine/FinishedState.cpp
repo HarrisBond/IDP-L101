@@ -10,6 +10,7 @@ FinishedState::FinishedState(){
 }
 
 void FinishedState::EnterState(StateMachine* parentMachine){
+    Serial.println("finished state entered");
     motorController->Stop();
     timeInState = 0.0;
 }
@@ -21,7 +22,7 @@ void FinishedState::Update(StateMachine* parentMachine){
 }
 
 void FinishedState::ExitState(StateMachine* parentMachine){
-
+    Serial.println("Finished state updating");
 }
 
 State& FinishedState::GetInstance(){

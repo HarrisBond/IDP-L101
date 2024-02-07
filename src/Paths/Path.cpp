@@ -49,6 +49,10 @@ bool Path::IsEmpty(){
     return path.GetCount()==0;
 }
 
+int Path::GetCount(){
+    return path.GetCount();
+}
+
 void Path::PrintPath(){
     Serial.print("  printing path (count = " + String(path.GetCount()) + "): \n");
     Serial.flush();

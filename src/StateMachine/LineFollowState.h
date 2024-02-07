@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Paths/Path.h"
+#include "../Globals.h"
 // #include "LineFollowing.h"
 
 
@@ -16,8 +17,8 @@ private:
     float timeSinceJunction;
     const float timeSinceJunctionThreshold = 2000.0;
     void LineFollow(Step currentStep);
-    void HandleBothOuters(Step currentSteo);
-    void HandleBothInners(Step currentSteo);
+    void HandleBothOuters(Step currentStep);
+    void HandleBothInners(Step currentStep);
     void HandleLightFlash();
     float nextStepTimer;
     float lightTimer;

@@ -2,7 +2,7 @@
 #include "BlockPickupState.h"
 #include "BlockDropState.h"
 #include "BlindForwardState.h"
-#include "FinishedState.h"x
+#include "FinishedState.h"
 #include <Arduino.h>
 #include "../IO/IO.h"
 #include "../Paths/Path.h"
@@ -21,9 +21,12 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
     timeSinceJunction = 5000.0;
     nextStepTimer = -1.0;
     Sequencer::GetNextPath(&currentPath);
+    Serial.println("current path count = " + String(currentPath.GetCount()));
     if (currentPath.IsEmpty()){
         //empty path, we are done and at the start
+        Serial.println("empty path detected");Serial.flush();
         parentMachine->ChangeState(FinishedState::GetInstance());
+        return;
     }
     Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
     Serial.flush();
@@ -33,6 +36,7 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     Step currentStep = currentPath.GetCurrentStep();
     if (currentStep == Step::returnStart){
         parentMachine->ChangeState(BlindForwardState::GetInstance());
+        return;
     }
     // Serial.println("    Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
     // Serial.flush();
@@ -70,6 +74,7 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         if (blockDistance < BLOCK_DISTANCE_THRESHOLD){
             Serial.println("    Block detected");Serial.flush();
             parentMachine->ChangeState(BlockPickupState::GetInstance());
+            return;
         }
         // BlockPickupState::GetInstance();
     }
@@ -78,6 +83,7 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         //check platform distance sensor, enter block drop state if needed
         if (IO::Sensors::PlatformSwitchPressed()){
             parentMachine->ChangeState(BlockDropState::GetInstance());
+            return;
         }
     }
 }

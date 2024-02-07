@@ -11,7 +11,7 @@ BlindTurnState::BlindTurnState(){
 }
 
 void BlindTurnState::EnterState(StateMachine* parentMachine){
-    Serial.println("Turn 180 state entered");Serial.flush();
+    Serial.println("Blind turn state entered");Serial.flush();
     // turnTimer = maxTurnTime;
     int turnAngle = Sequencer::GetNextTurnAngle();
     if (turnAngle < 0){
@@ -20,7 +20,7 @@ void BlindTurnState::EnterState(StateMachine* parentMachine){
     } else {
         motorController->Left();
     }
-    turnTimerMilliseconds = turnAngle * 17;
+    turnTimerMilliseconds = turnAngle * 13;
     // motorController->Left();
     // motorController->SetRelativeSpeeds(-0.2, 1.0);
 }

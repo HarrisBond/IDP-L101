@@ -1,6 +1,7 @@
 #pragma once
 // #include <cppQueue.h>
 #include "../Queue/Queue.h"
+#include "../Globals.h"
 
 //these store the direction bias. When a T Junction is reached, the bot will turn until both the
 //left and right sensors detect the line. At this point, we can either turn left or right, which
@@ -16,6 +17,7 @@ class Path{
         Step GetCurrentStep();
         bool IsEmpty();
         void PrintPath();
+        int GetCount();
     private:
         Queue path;
 };
