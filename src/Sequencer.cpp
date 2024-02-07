@@ -49,9 +49,9 @@ void Sequencer::Initialize(){
     greenFoamA->SetNextIfEmpty(resB);
 
     Node* redSolidB = new Node(WayPoint::redSolid);
-    redSolidB->SetNextAngleIfEmpty(-90);
+    redSolidB->SetNextAngleIfEmpty(-70);
     Node* greenFoamB = new Node(WayPoint::greenFoam);
-    greenFoamB->SetNextAngleIfEmpty(90);
+    greenFoamB->SetNextAngleIfEmpty(70);
     resB->SetNextIfSolid(redSolidB);
     resB->SetNextIfFoam(greenFoamB);
 
