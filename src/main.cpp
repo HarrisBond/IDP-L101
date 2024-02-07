@@ -7,10 +7,14 @@
 #include "Sequencer.h"
 #include "Globals.h"
 #include "SPI.h"
+#include <Servo.h>
 
 StateMachine* stateMachine;
 Time* time;
 IO::Motors* motorController;
+IO::TimeFlightSensor* timeFlightSensor;
+Adafruit_DCMotor *grabberMotor;
+Servo lifter; 
 
 void setup() {
   // debug_init();
@@ -26,6 +30,7 @@ void setup() {
   time = new Time();
   motorController = new IO::Motors();
   motorController->Initialise();
+  timeFlightSensor->Initialise();
   stateMachine = new StateMachine();
   Sequencer::Initialize();
   stateMachine->ChangeState(BlindForwardState::GetInstance());

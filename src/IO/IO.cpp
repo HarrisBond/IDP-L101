@@ -3,7 +3,24 @@
 #include <Arduino.h>
 
 
+
 void IO::LEDs::IndicateFoamBlock(){
+    // green
+    digitalWrite(GREEN_LED_PIN, HIGH);
+    delay(5000);
+    digitalWrite(GREEN_LED_PIN, LOW);
+}
+
+void IO::LEDs::IndicateSolidBlock() {
+    // red
+    digitalWrite(RED_LED_PIN, HIGH);
+    delay(5000);
+    digitalWrite(RED_LED_PIN, LOW);
+}
+
+void IO::LEDs::TurnOffAll() {
+    digitalWrite(RED_LED_PIN, LOW);
+    digitalWrite(GREEN_LED_PIN, LOW);
 }
 
 // void IO::Motors::SetRelativeSpeeds(float linear, float angular){
@@ -91,8 +108,18 @@ void IO::Sensors::LineSense(bool& outerLeft, bool& outerRight, bool& innerLeft, 
     return;
 }
 
-void IO::Sensors::GetBlockDistance(float& blockDistance){
-    blockDistance = random(100);
+void IO::TimeFlightSensor::Initialise() {
+    Wire.begin();
+    timeFlightSensor.begin(0x50);
+    //Set to Back-to-back mode and high precision mode
+    timeFlightSensor.setMode(timeFlightSensor.eContinuous, timeFlightSensor.eHigh);
+    //Laser rangefinder begins to work
+    timeFlightSensor.start();
+}
+
+
+void IO::TimeFlightSensor::GetBlockDistance(float& blockDistance){
+    blockDistance = timeFlightSensor.getDistance();
 }
 
 bool IO::Sensors::PlatformSwitchPressed(){

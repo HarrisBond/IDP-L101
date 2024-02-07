@@ -3,11 +3,13 @@
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
+#include "../DFRobot_VL53L0X.h"
 
 namespace IO {
     namespace LEDs{
         void IndicateFoamBlock();
         void IndicateSolidBlock();
+        void TurnOffAll();
     }
 
     class Motors
@@ -30,6 +32,14 @@ namespace IO {
             const float lineFollowAngularSpeed = 0.9;
     };
 
+    class TimeFlightSensor
+    {
+        public:
+            void Initialise();
+            void GetBlockDistance(float& blockDistance);
+        private:
+            DFRobot_VL53L0X timeFlightSensor;
+    };
 
     namespace Sensors{
         //returns 0 when detecting black, 1 when detecting white
@@ -39,7 +49,6 @@ namespace IO {
 
         //get distance to block in mm. This can either use the ultrasount or TOF module.
         //maybe we could measure roughness by slowly rotating the robot while collecting TOF data to differentiate between solid and foam blocks?
-        void GetBlockDistance(float& blockDistance);
 
         bool PlatformSwitchPressed();
 

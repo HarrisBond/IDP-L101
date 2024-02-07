@@ -1,6 +1,7 @@
 #pragma once
 #include "../Globals.h"
 
+
 class Queue{
     public:
         Queue(int _maxSize);

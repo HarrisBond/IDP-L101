@@ -2,7 +2,7 @@
 #include "BlockPickupState.h"
 #include "BlockDropState.h"
 #include "BlindForwardState.h"
-#include "FinishedState.h"x
+#include "FinishedState.h"
 #include <Arduino.h>
 #include "../IO/IO.h"
 #include "../Paths/Path.h"
@@ -65,8 +65,8 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     //this will trigger changes to other states.
     if (currentStep == Step::forwardBlock){
         //check block distance sensor, enter block pickup state if needed
-        float blockDistance;
-        IO::Sensors::GetBlockDistance(blockDistance);
+        float blockDistance = INFINITY;
+        timeFlightSensor->GetBlockDistance(blockDistance);
         if (blockDistance < BLOCK_DISTANCE_THRESHOLD){
             Serial.println("    Block detected");Serial.flush();
             parentMachine->ChangeState(BlockPickupState::GetInstance());
