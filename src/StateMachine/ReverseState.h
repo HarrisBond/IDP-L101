@@ -2,6 +2,11 @@
 
 #include "State.h"
 #include "../Sequencer.h"
+#include "StateMachine.h"
+#include "BlindTurnState.h"
+#include <Arduino.h>
+#include "../Globals.h"
+#include "../IO/IO.h"
 
 class ReverseState : public State {
 public:

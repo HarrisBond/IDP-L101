@@ -1,23 +1,11 @@
-#include "StateMachine.h"
-#include "BlockPickupState.h"
-#include "BlockDropState.h"
-#include "BlindForwardState.h"
-#include "FinishedState.h"
-#include <Arduino.h>
-#include "../IO/IO.h"
-#include "../Paths/Path.h"
-#include "../Time/Time.h"
-#include "../Sequencer.h"
-#include "../Globals.h"
+#include "LineFollowState.h"
+
 
 LineFollowState::LineFollowState() : State() {
     timeSinceJunction = 0.0;
-    // Serial.println("line follow state constructor");
-    // Serial.flush();
 }
 
 void LineFollowState::EnterState(StateMachine* parentMachine){
-    //initialization
     timeSinceJunction = 5000.0;
     nextStepTimer = -1.0;
     Sequencer::GetNextPath(&currentPath);
@@ -38,8 +26,6 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         parentMachine->ChangeState(BlindForwardState::GetInstance());
         return;
     }
-    // Serial.println("    Update fron the line follow state, current step is " + String(currentPath.GetCurrentStep()));
-    // Serial.flush();
     float deltaTime = time->GetDeltaTime();
     timeSinceJunction += deltaTime;
     lightTimer += deltaTime;
@@ -47,18 +33,9 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     nextStepTimer -= deltaTime;
     if (sign(nextStepTimer) != sign(prevNextStepTimer)){
         currentPath.GetNextStep();
-        // currentStep = currentPath.GetCurrentStep();
     }
     HandleLightFlash();
 
-    // int turnAngle = TurnAngleFromTurnStep(currentPath.GetCurrentStep());
-    // if (turnAngle != 0){
-    //     Sequencer::SetNextTurnAngle(turnAngle);
-    //     currentPath.GetNextStep();
-    // }
-    // Serial.println(String());
-    //need to check left and right sensors and turn accordingly.
-    
     //if both sensors detect line, we are at a junction and need to choose turn direction
     //based on the path planning. also need to tell the state machine that a t junction has been reached.
     //this t junction will be continuously detected until we leave it, so a timer needs to be used by the
@@ -76,7 +53,6 @@ void LineFollowState::Update(StateMachine* parentMachine) {
             parentMachine->ChangeState(BlockPickupState::GetInstance());
             return;
         }
-        // BlockPickupState::GetInstance();
     }
 
     if (currentStep == Step::forwardPlatform){
@@ -89,13 +65,8 @@ void LineFollowState::Update(StateMachine* parentMachine) {
 }
 
 void LineFollowState::LineFollow(Step currentStep){
-    // Serial.println(String(currentStep));
-    // bool left = IO::Sensors::LineSenseLeft();
-    // bool right = IO::Sensors::LineSenseRight();
     bool outerLeft, outerRight, innerLeft, innerRight;
     IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
-    // Serial.print(String(left) + ", " + String(right) + "\n");
-    // Serial.flush();
     
     if (outerLeft && !outerRight){
         motorController->Left();//anticlockwise
@@ -109,7 +80,6 @@ void LineFollowState::LineFollow(Step currentStep){
         } else if (!innerLeft && innerRight){
             motorController->ForwardRight();//clockwise
         } else if (innerLeft && innerRight){
-            //should always turn left at junctions
             HandleBothInners(currentStep);
         } else {
             motorController->Forward();
@@ -133,11 +103,7 @@ void LineFollowState::HandleBothOuters(Step currentStep){
         currentPath.GetNextStep();
     }
     if (timeSinceJunction > timeSinceJunctionThreshold){
-        //new junction detected
-        // Step nextStep = currentPath->GetNextStep();
         Serial.println("    T junction found");Serial.flush();
-        // currentPath.GetNextStep();
-        // currentStep = currentPath.GetCurrentStep();
         timeSinceJunction = 0.0;
         nextStepTimer = timeSinceJunctionThreshold;
     }
@@ -159,8 +125,6 @@ void LineFollowState::HandleBothInners(Step currentStep){
 }
 
 void LineFollowState::ExitState(StateMachine* parentMachine) {
-    // Serial.println("Exiting the line follow state");
-    // Serial.flush();
 }
 
 //this returns a singleton instance of the line follow state. A function like this needs to be included in each concrete state.

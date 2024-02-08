@@ -1,8 +1,16 @@
 #pragma once
 #include "State.h"
-#include "Paths/Path.h"
+#include "../Paths/Path.h"
+#include "StateMachine.h"
+#include "BlockPickupState.h"
+#include "BlockDropState.h"
+#include "BlindForwardState.h"
+#include "FinishedState.h"
+#include <Arduino.h>
+#include "../IO/IO.h"
+#include "../Time/Time.h"
+#include "../Sequencer.h"
 #include "../Globals.h"
-// #include "LineFollowing.h"
 
 
 class LineFollowState : public State {

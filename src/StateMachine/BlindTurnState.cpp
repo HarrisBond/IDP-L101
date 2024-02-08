@@ -1,10 +1,5 @@
 #include "BlindTurnState.h"
-// #include "../Sequencer.h"
-#include "StateMachine.h"
-#include "BlindForwardState.h"
-#include <Arduino.h>
-// #include "../IO/IO.h";
-#include "../Globals.h"
+
 
 BlindTurnState::BlindTurnState(){
     turnTimerMilliseconds = 0.0;
@@ -12,7 +7,6 @@ BlindTurnState::BlindTurnState(){
 
 void BlindTurnState::EnterState(StateMachine* parentMachine){
     Serial.println("Blind turn state entered");Serial.flush();
-    // turnTimer = maxTurnTime;
     int turnAngle = Sequencer::GetNextTurnAngle();
     if (turnAngle < 0){
         motorController->Right();
@@ -21,12 +15,9 @@ void BlindTurnState::EnterState(StateMachine* parentMachine){
         motorController->Left();
     }
     turnTimerMilliseconds = turnAngle * 13;
-    // motorController->Left();
-    // motorController->SetRelativeSpeeds(-0.2, 1.0);
 }
 
 void BlindTurnState::Update(StateMachine* parentMachine){
-    // Serial.println("    Update called on Block Drop State");Serial.flush();
     turnTimerMilliseconds -= time->GetDeltaTime();
     if (turnTimerMilliseconds <= 0.0){
         motorController->Stop();

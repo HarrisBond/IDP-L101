@@ -1,9 +1,5 @@
 #include "FinishedState.h"
-// #include "../Sequencer.h"
-#include "StateMachine.h"
-#include <Arduino.h>
-// #include "../IO/IO.h";
-#include "../Globals.h"
+
 
 FinishedState::FinishedState(){
     
@@ -16,9 +12,7 @@ void FinishedState::EnterState(StateMachine* parentMachine){
 }
 
 void FinishedState::Update(StateMachine* parentMachine){
-    // Serial.println("    Update called on Block Drop State");Serial.flush();
     timeInState += time->GetDeltaTime();
-    // 
 }
 
 void FinishedState::ExitState(StateMachine* parentMachine){

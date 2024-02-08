@@ -1,5 +1,5 @@
 #include "StateMachine.h"
-#include <Arduino.h>
+
 
 void State::EnterState(StateMachine* parentMachine) {
     Serial.println("enter state called on state base class");

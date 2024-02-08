@@ -1,6 +1,11 @@
 #pragma once
 
 #include "State.h"
+#include "../Sequencer.h"
+#include "StateMachine.h"
+#include "BlindTurnState.h"
+#include "ReverseState.h"
+#include <Arduino.h>
 
 class BlockDropState : public State {
 public:

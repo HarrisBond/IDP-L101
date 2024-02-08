@@ -1,5 +1,6 @@
 #pragma once
 #include "LineFollowState.h"
+#include <Arduino.h>
 
 class State;
 

@@ -2,6 +2,8 @@
 #include "Paths/Path.h"
 #include "Paths/Node.h"
 #include "Globals.h"
+#include <Arduino.h>
+#include "stdlib.h"
 
 #define MAX_PATH_LENGTH 10
 class Sequencer{

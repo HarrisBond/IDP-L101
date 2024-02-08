@@ -2,6 +2,9 @@
 
 #include "State.h"
 #include "../Sequencer.h"
+#include "StateMachine.h"
+#include <Arduino.h>
+#include "../Globals.h"
 
 class FinishedState : public State {
 public:

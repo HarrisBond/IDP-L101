@@ -1,14 +1,9 @@
 #include "IO.h"
-#include "../Globals.h"
-#include <Arduino.h>
+
 
 
 void IO::LEDs::IndicateFoamBlock(){
 }
-
-// void IO::Motors::SetRelativeSpeeds(float linear, float angular){
-//     Serial.println("        motors speeds set to " + String(linear) + ", " + String(angular));
-// }
 
 void IO::Motors::Initialise(){
     AFMS = Adafruit_MotorShield();
@@ -16,7 +11,6 @@ void IO::Motors::Initialise(){
     rightMotor = AFMS.getMotor(2);
 
     if (!AFMS.begin()) {         // create with the default frequency 1.6KHz
-    // if (!AFMS.begin(1000)) {  // OR with a different frequency, say 1KHz
         Serial.println("Could not find Motor Shield. Check wiring.");
         while (1);
     }
@@ -43,27 +37,22 @@ void IO::Motors::SetRelativeSpeeds(float linear, float angular){
 }
 
 void IO::Motors::ForwardLeft(){
-    // Serial.println("        Forward Left");Serial.flush();
     SetRelativeSpeeds(lineFollowLinearSpeed*0.5, lineFollowAngularSpeed*0.3);
 }
 
 void IO::Motors::Left(){
-    // Serial.println("        Left");Serial.flush();
     SetRelativeSpeeds(lineFollowLinearSpeed * 0.3, lineFollowAngularSpeed);
 }
 
 void IO::Motors::ForwardRight(){
-    // Serial.println("        Forward Right");Serial.flush();
     SetRelativeSpeeds(lineFollowLinearSpeed*0.5, -lineFollowAngularSpeed*0.3);
 }
 
 void IO::Motors::Right(){
-    // Serial.println("        Right");Serial.flush();
     SetRelativeSpeeds(lineFollowLinearSpeed * 0.3, -lineFollowAngularSpeed);
 }
 
 void IO::Motors::Forward(){
-    // Serial.println("        Forward");Serial.flush();
     SetRelativeSpeeds(lineFollowLinearSpeed, 0.0);
 }
 
@@ -71,7 +60,6 @@ void IO::Motors::Stop(){
     SetRelativeSpeeds(0.0,0.0);
     leftMotor->run(RELEASE);
     rightMotor->run(RELEASE);
-    // Serial.println("        Motors stopped");Serial.flush();
 }
 
 void IO::Motors::SetGripperServoAngle(float angle){
@@ -87,10 +75,6 @@ void IO::Sensors::LineSense(bool& outerLeft, bool& outerRight, bool& innerLeft, 
     outerRight = digitalRead(OUTER_RIGHT_LINE_SENSOR_PIN);
     innerLeft = digitalRead(INNER_LEFT_LINE_SENSOR_PIN);
     innerRight = digitalRead(INNER_RIGHT_LINE_SENSOR_PIN);
-    // outerLeft = (random(100) / 100.0) < 0.5;
-    // outerRight = (random(100) / 100.0) < 0.5;
-    // innerLeft = (random(100) / 100.0) < 0.5;
-    // innerRight = (random(100) / 100.0) < 0.5;
     return;
 }
 
@@ -104,13 +88,3 @@ bool IO::Sensors::PlatformSwitchPressed(){
     }
     return false;
 }
-// bool IO::Sensors::LineSenseLeft(){
-//     if (random(100) / 100.0 < 0.1){
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool IO::Sensors::LineSenseRight(){
-//     return true;
-// }
