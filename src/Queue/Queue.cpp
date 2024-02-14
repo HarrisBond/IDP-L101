@@ -29,6 +29,10 @@ Step Queue::PeekAt(int index){
     return steps[index];
 }
 
+Step Queue::PeekNext(){
+    return steps[front + 1];
+}
+
 void Queue::Flush(){
     stepCount = 0;
     front = 0;

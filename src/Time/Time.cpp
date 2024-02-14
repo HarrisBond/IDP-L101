@@ -13,5 +13,5 @@ void Time::Update() {
 }
 
 float Time::GetDeltaTime() {
-	return deltaTime;
+	return deltaTime < 100 ? deltaTime : 0;
 }

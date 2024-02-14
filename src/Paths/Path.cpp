@@ -26,6 +26,10 @@ Step Path::GetCurrentStep(){
     return path.Peek();
 }
 
+Step Path::PeekNextStep(){
+    return path.PeekNext();
+}
+
 bool Path::IsEmpty(){
     return path.GetCount()==0;
 }

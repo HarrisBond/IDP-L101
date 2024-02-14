@@ -23,12 +23,16 @@ public:
 private:
     Path currentPath;
     float timeSinceJunction;
-    const float timeSinceJunctionThreshold = 2000.0;
+    const float timeSinceJunctionThreshold = 1500.0;
     void LineFollow(Step currentStep);
+    void OtherLineFollow();
+    void OtherLineFollowReverse();
     void HandleBothOuters(Step currentStep);
     void HandleBothInners(Step currentStep);
     void HandleLightFlash();
     float nextStepTimer;
     float lightTimer;
+    float forwardBlockTimer;
     int sign(float x);
+    DFRobot_VL53L0X TOFsensor;
 };

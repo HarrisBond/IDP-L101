@@ -6,7 +6,6 @@ BlindForwardState::BlindForwardState(){
 }
 
 void BlindForwardState::EnterState(StateMachine* parentMachine){
-    Serial.println("Blind Forward State Entered");Serial.flush();
     if (!Sequencer::HasStarted()){
         forwardTimerMilliseconds = startForwardTime;
     } else if (Sequencer::IsFinishing()){
@@ -14,6 +13,7 @@ void BlindForwardState::EnterState(StateMachine* parentMachine){
     } else {
         forwardTimerMilliseconds = defaultForwardTime;
     }
+    Serial.println("Blind Forward State Entered");Serial.flush();
     motorController->SetRelativeSpeeds(1.0, 0.0);
 }
 

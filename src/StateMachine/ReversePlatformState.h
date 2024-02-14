@@ -8,14 +8,13 @@
 #include "../Globals.h"
 #include "../IO/IO.h"
 
-class ReverseState : public State {
+class ReversePlatformState : public State {
 public:
-    ReverseState();
+    ReversePlatformState();
     void EnterState(StateMachine* parentMachine);
     void Update(StateMachine* parentMachine);
     void ExitState(StateMachine* parentMachine);
     static State& GetInstance();
 private:
-    bool leftDetected;
-    bool rightDetected;
+
 };

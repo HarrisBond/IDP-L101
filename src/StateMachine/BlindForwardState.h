@@ -16,6 +16,6 @@ public:
 private:
     float forwardTimerMilliseconds;
     const float defaultForwardTime = 500.0;
-    const float startForwardTime = 3000.0;
+    const float startForwardTime = 1500.0;
     const float endForwardTime = 2000.0;
 };

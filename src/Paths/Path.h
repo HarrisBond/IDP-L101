@@ -15,6 +15,7 @@ class Path{
         void SetPath(Step steps[], int numSteps);
         Step GetNextStep();
         Step GetCurrentStep();
+        Step PeekNextStep();
         bool IsEmpty();
         void PrintPath();
         int GetCount();

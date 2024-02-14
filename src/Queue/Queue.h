@@ -9,6 +9,7 @@ class Queue{
         Step Pop();
         Step Peek();
         Step PeekAt(int index);
+        Step PeekNext();
         void Flush();
         int GetCount();
     private:

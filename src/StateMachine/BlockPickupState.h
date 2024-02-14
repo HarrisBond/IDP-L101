@@ -1,6 +1,7 @@
 #pragma once
 
 #include "State.h"
+#include "../IO/IO.h"
 
 class BlockPickupState : public State {
 public:
@@ -10,5 +11,6 @@ public:
     void ExitState(StateMachine* parentMachine);
     static State& GetInstance();
 private:
-    
+    float forwardTimerMilliseconds;
+    void LineFollow();
 };

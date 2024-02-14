@@ -9,10 +9,11 @@ void BlindTurnState::EnterState(StateMachine* parentMachine){
     Serial.println("Blind turn state entered");Serial.flush();
     int turnAngle = Sequencer::GetNextTurnAngle();
     if (turnAngle < 0){
-        motorController->Right();
+        motorController->SetRelativeSpeeds(0.2, -1.0);
         turnAngle =- turnAngle;
     } else {
-        motorController->Left();
+        //left
+        motorController->SetRelativeSpeeds(0.2, 1.0);
     }
     turnTimerMilliseconds = turnAngle * 13;
 }
