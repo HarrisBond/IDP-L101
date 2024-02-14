@@ -5,7 +5,7 @@ ReversePlatformState::ReversePlatformState(){
 }
 
 void ReversePlatformState::EnterState(StateMachine* parentMachine){
-    Serial.println("Blind Forward State Entered");Serial.flush();
+    Serial.println("Reverse Platform State Entered");Serial.flush();
     motorController->SetRelativeSpeeds(-1.0, 0.0);
 }
 

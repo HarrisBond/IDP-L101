@@ -21,8 +21,8 @@ void Sequencer::Initialize(){
     currentNode = new Node(WayPoint::start);
 
     Node* resA = new Node(WayPoint::resA);
-    resA->SetNextAngleIfSolid(-80);
-    resA->SetNextAngleIfFoam(80);
+    resA->SetNextAngleIfSolid(-70);
+    resA->SetNextAngleIfFoam(70);
     currentNode->SetNextIfEmpty(resA);
 
     Node* redSolidA = new Node(WayPoint::redSolid);

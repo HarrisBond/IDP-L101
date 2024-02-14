@@ -16,7 +16,7 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
     nextStepTimer = -1.0;
     forwardBlockTimer = 10000000;
     Sequencer::GetNextPath(&currentPath);
-    Serial.println("current path count = " + String(currentPath.GetCount()));
+    Serial.println("current path count = " + String(currentPath.GetCount()));Serial.flush();
     if (currentPath.IsEmpty()){
         //empty path, we are done and at the start
         Serial.println("empty path detected");Serial.flush();
@@ -24,8 +24,7 @@ void LineFollowState::EnterState(StateMachine* parentMachine){
         parentMachine->ChangeState(FinishedState::GetInstance());
         return;
     }
-    Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));
-    Serial.flush();
+    Serial.println("Enter state called on line follow state, Current step is " + String(currentPath.GetCurrentStep()));Serial.flush();
 }
 
 void LineFollowState::Update(StateMachine* parentMachine) {

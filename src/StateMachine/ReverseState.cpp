@@ -5,7 +5,7 @@ ReverseState::ReverseState(){
 }
 
 void ReverseState::EnterState(StateMachine* parentMachine){
-    Serial.println("Blind Forward State Entered");Serial.flush();
+    Serial.println("Reverse State Entered");Serial.flush();
     motorController->SetRelativeSpeeds(-1.0, 0.0);
     leftDetected = false;
     rightDetected = false;
