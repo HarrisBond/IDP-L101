@@ -16,7 +16,6 @@ void FinishedState::Update(StateMachine* parentMachine){
 }
 
 void FinishedState::ExitState(StateMachine* parentMachine){
-    Serial.println("Finished state updating");
 }
 
 State& FinishedState::GetInstance(){

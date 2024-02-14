@@ -21,8 +21,8 @@ void Sequencer::Initialize(){
     currentNode = new Node(WayPoint::start);
 
     Node* resA = new Node(WayPoint::resA);
-    resA->SetNextAngleIfSolid(-70);
-    resA->SetNextAngleIfFoam(70);
+    resA->SetNextAngleIfSolid(-80);
+    resA->SetNextAngleIfFoam(80);
     currentNode->SetNextIfEmpty(resA);
 
     Node* redSolidA = new Node(WayPoint::redSolid);
@@ -45,9 +45,22 @@ void Sequencer::Initialize(){
     resB->SetNextIfSolid(redSolidB);
     resB->SetNextIfFoam(greenFoamB);
 
-    Node* end = new Node(WayPoint::start);
-    redSolidB->SetNextIfEmpty(end);
-    greenFoamB->SetNextIfEmpty(end);
+    Node* industrialA = new Node(WayPoint::industrialA);
+    industrialA->SetNextAngleIfFoam(90);
+    industrialA->SetNextAngleIfSolid(90);
+    redSolidB->SetNextIfEmpty(industrialA);
+    greenFoamB->SetNextIfEmpty(industrialA);
+
+    Node* redSolidC = new Node(WayPoint::redSolid);
+    redSolidC->SetNextAngleIfEmpty(-170);
+    Node* greenFoamC = new Node(WayPoint::greenFoam);
+    greenFoamC->SetNextAngleIfEmpty(170);
+    industrialA->SetNextIfFoam(greenFoamC);
+    industrialA->SetNextIfSolid(redSolidC);
+
+    // Node* end = new Node(WayPoint::start);
+    // redSolidB->SetNextIfEmpty(end);
+    // greenFoamB->SetNextIfEmpty(end);
 
     //all required paths are hard coded here and added to the lookup table
     //paths should only be added where the start waypoint is before the end in the waypoint enum
@@ -125,6 +138,19 @@ void Sequencer::SetUpPathLUT(){
 
     Step* redSolid_start = new Step[3] {Step::forwardLeft, Step::returnStart, Step::nullStep};
     SetPathLUT(WayPoint::redSolid, WayPoint::start, redSolid_start);
+
+    Step* redSolid_industrialA = new Step[4] {Step::forwardLeft, Step::forwardRight, Step::doIndustrialA, Step::nullStep};
+    SetPathLUT(WayPoint::redSolid, WayPoint::industrialA, redSolid_industrialA);
+
+    Step* greenFoam_industrialA = new Step[4] {Step::forwardRight, Step::forwardLeft, Step::doIndustrialA, Step::nullStep};
+    SetPathLUT(WayPoint::greenFoam, WayPoint::industrialA, greenFoam_industrialA);
+
+    Step* industrialA_redSolid = new Step[6] {Step::forwardLeft, Step::forwardLeft, Step::forwardRight, Step::forwardLeft, Step::forwardPlatform, Step::nullStep};
+    SetPathLUT(WayPoint::industrialA, WayPoint::redSolid, industrialA_redSolid);
+
+    //RLR
+    Step* industrialA_greenFoam = new Step[5] {Step::forwardRight, Step::forwardLeft, Step::forwardRight, Step::forwardPlatform, Step::nullStep};
+    SetPathLUT(WayPoint::industrialA, WayPoint::greenFoam, industrialA_greenFoam);
 }
 
 void Sequencer::SetPathLUT(WayPoint start, WayPoint end, Step* path){

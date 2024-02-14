@@ -102,55 +102,55 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     }
 }
 
-void LineFollowState::OtherLineFollow(){
-    // Serial.println("line following");
-    if (IO::Sensors::PlatformSwitchPressed()){
-        motorController->SetRelativeSpeeds(-1.0, 0.0);
-        delay(200);return;
-    }
-    bool outerLeft, outerRight, innerLeft, innerRight;
-    IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
+// void LineFollowState::OtherLineFollow(){
+//     // Serial.println("line following");
+//     if (IO::Sensors::PlatformSwitchPressed()){
+//         motorController->SetRelativeSpeeds(-1.0, 0.0);
+//         delay(200);return;
+//     }
+//     bool outerLeft, outerRight, innerLeft, innerRight;
+//     IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
     
-    if (outerLeft && !outerRight){
-        motorController->Left();//anticlockwise
-    } else if (!outerLeft && outerRight){
-        motorController->Right();//clockwise
-    } else if (outerLeft && outerRight){
-        motorController->Forward();
-    } else {
-        if (innerLeft && !innerRight){
-            motorController->SetRelativeSpeeds(0.7, 0.4);//anticlockwise
-        } else if (!innerLeft && innerRight){
-            motorController->SetRelativeSpeeds(0.7, -0.4);//clockwise
-        } else if (innerLeft && innerRight){
-            motorController->Forward();
-        } else {
-            motorController->Forward();
-        }
-    }
-}
+//     if (outerLeft && !outerRight){
+//         motorController->Left();//anticlockwise
+//     } else if (!outerLeft && outerRight){
+//         motorController->Right();//clockwise
+//     } else if (outerLeft && outerRight){
+//         motorController->Forward();
+//     } else {
+//         if (innerLeft && !innerRight){
+//             motorController->SetRelativeSpeeds(0.7, 0.4);//anticlockwise
+//         } else if (!innerLeft && innerRight){
+//             motorController->SetRelativeSpeeds(0.7, -0.4);//clockwise
+//         } else if (innerLeft && innerRight){
+//             motorController->Forward();
+//         } else {
+//             motorController->Forward();
+//         }
+//     }
+// }
 
-void LineFollowState::OtherLineFollowReverse(){
-    // Serial.println("line following");
-    bool outerLeft, outerRight, innerLeft, innerRight;
-    IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
+// void LineFollowState::OtherLineFollowReverse(){
+//     // Serial.println("line following");
+//     bool outerLeft, outerRight, innerLeft, innerRight;
+//     IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
     
-    if (outerLeft && !outerRight){
-        motorController->SetSpeeds(0.0, -1.0);
-    } else if (!outerLeft && outerRight){
-        motorController->SetSpeeds(-1.0, 0.0);
-    } else if (outerLeft && outerRight){
-        motorController->SetSpeeds(-1.0, -1.0);
-    } else {
-        if (innerLeft && !innerRight){
-            motorController->SetRelativeSpeeds(-0.6, -1.0);//anticlockwise
-        } else if (!innerLeft && innerRight){
-            motorController->SetRelativeSpeeds(-1.0, -0.6);//clockwise
-        } else {
-            motorController->SetRelativeSpeeds(-1.0, -1.0);
-        }
-    }
-}
+//     if (outerLeft && !outerRight){
+//         motorController->SetSpeeds(0.0, -1.0);
+//     } else if (!outerLeft && outerRight){
+//         motorController->SetSpeeds(-1.0, 0.0);
+//     } else if (outerLeft && outerRight){
+//         motorController->SetSpeeds(-1.0, -1.0);
+//     } else {
+//         if (innerLeft && !innerRight){
+//             motorController->SetRelativeSpeeds(-0.6, -1.0);//anticlockwise
+//         } else if (!innerLeft && innerRight){
+//             motorController->SetRelativeSpeeds(-1.0, -0.6);//clockwise
+//         } else {
+//             motorController->SetRelativeSpeeds(-1.0, -1.0);
+//         }
+//     }
+// }
 
 void LineFollowState::LineFollow(Step currentStep){
     bool outerLeft, outerRight, innerLeft, innerRight;
