@@ -4,6 +4,7 @@
 
 class StateMachine;
 
+//base class for states
 class State {
 public:
     virtual void EnterState(StateMachine* parentMachine);

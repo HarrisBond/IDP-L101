@@ -1,7 +1,6 @@
 #include "IO.h"
 
 
-
 void IO::LEDs::ToggleBlueLED(){
     static bool blueLEDState;
     digitalWrite(BLUE_LED_PIN, blueLEDState);
@@ -63,7 +62,7 @@ void IO::Motors::ForwardLeft(){
 }
 
 void IO::Motors::Left(){
-    SetSpeeds(-0.7, 1.0);
+    SetSpeeds(-0.6, 1.0);
 }
 
 void IO::Motors::ForwardRight(){
@@ -71,7 +70,7 @@ void IO::Motors::ForwardRight(){
 }
 
 void IO::Motors::Right(){
-    SetSpeeds(1.0, -0.7);
+    SetSpeeds(1.0, -0.6);
 }
 
 void IO::Motors::Forward(){

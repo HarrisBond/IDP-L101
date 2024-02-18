@@ -4,6 +4,7 @@
 
 class State;
 
+//stores the current state, updates it, and handles state changes.
 class StateMachine {
     public:
         StateMachine();

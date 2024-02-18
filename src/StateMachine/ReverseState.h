@@ -8,6 +8,9 @@
 #include "../Globals.h"
 #include "../IO/IO.h"
 
+
+//reverses blindly until both outer line sensors have detected a line, at which point we have reached a junction and can transition
+//into the blind turn state.
 class ReverseState : public State {
 public:
     ReverseState();

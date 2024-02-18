@@ -3,6 +3,7 @@
 #include "State.h"
 #include "../IO/IO.h"
 
+//executes a hardcoded sequence to grab and test blocks
 class BlockPickupState : public State {
 public:
     BlockPickupState();
@@ -12,5 +13,4 @@ public:
     static State& GetInstance();
 private:
     float forwardTimerMilliseconds;
-    void LineFollow();
 };

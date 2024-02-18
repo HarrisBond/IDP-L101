@@ -46,24 +46,9 @@ void LineFollowState::Update(StateMachine* parentMachine) {
         if (currentPath.GetCurrentStep() == Step::forwardPlatform){
             motorController->LowerArm();
         } else if (currentPath.GetCurrentStep() == Step::forwardBlock){
-            // motorController->GripperOpen();
-            // motorController->Stop();
-            // delay(1000);
-            // for (int _ = 0; _ < 5; _++){
-            //     float forwardTimerMilliseconds = 400.0;
-            //     while (forwardTimerMilliseconds >= 0){
-            //         OtherLineFollow();
-            //         forwardTimerMilliseconds -= time->GetDeltaTime();
-            //     }
-            //     float reverseTimerMilliseconds = 400.0;
-            //     while (reverseTimerMilliseconds >= 0){
-            //         OtherLineFollowReverse();
-            //         reverseTimerMilliseconds -= time->GetDeltaTime();
-            //     }
-            //     // motorController->SetRelativeSpeeds(-1.0, 0.0);
-            //     // delay(400);
-            // }
             motorController->GripperOpen();
+            motorController->Stop();
+            delay(300);
             forwardBlockTimer = 4000;
         }
         if (currentPath.PeekNextStep() == Step::forwardBlock){
@@ -102,56 +87,6 @@ void LineFollowState::Update(StateMachine* parentMachine) {
     }
 }
 
-void LineFollowState::OtherLineFollow(){
-    // Serial.println("line following");
-    if (IO::Sensors::PlatformSwitchPressed()){
-        motorController->SetRelativeSpeeds(-1.0, 0.0);
-        delay(200);return;
-    }
-    bool outerLeft, outerRight, innerLeft, innerRight;
-    IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
-    
-    if (outerLeft && !outerRight){
-        motorController->Left();//anticlockwise
-    } else if (!outerLeft && outerRight){
-        motorController->Right();//clockwise
-    } else if (outerLeft && outerRight){
-        motorController->Forward();
-    } else {
-        if (innerLeft && !innerRight){
-            motorController->SetRelativeSpeeds(0.7, 0.4);//anticlockwise
-        } else if (!innerLeft && innerRight){
-            motorController->SetRelativeSpeeds(0.7, -0.4);//clockwise
-        } else if (innerLeft && innerRight){
-            motorController->Forward();
-        } else {
-            motorController->Forward();
-        }
-    }
-}
-
-void LineFollowState::OtherLineFollowReverse(){
-    // Serial.println("line following");
-    bool outerLeft, outerRight, innerLeft, innerRight;
-    IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
-    
-    if (outerLeft && !outerRight){
-        motorController->SetSpeeds(0.0, -1.0);
-    } else if (!outerLeft && outerRight){
-        motorController->SetSpeeds(-1.0, 0.0);
-    } else if (outerLeft && outerRight){
-        motorController->SetSpeeds(-1.0, -1.0);
-    } else {
-        if (innerLeft && !innerRight){
-            motorController->SetRelativeSpeeds(-0.6, -1.0);//anticlockwise
-        } else if (!innerLeft && innerRight){
-            motorController->SetRelativeSpeeds(-1.0, -0.6);//clockwise
-        } else {
-            motorController->SetRelativeSpeeds(-1.0, -1.0);
-        }
-    }
-}
-
 void LineFollowState::LineFollow(Step currentStep){
     bool outerLeft, outerRight, innerLeft, innerRight;
     IO::Sensors::LineSense(outerLeft, outerRight, innerLeft, innerRight);
@@ -176,7 +111,6 @@ void LineFollowState::LineFollow(Step currentStep){
 }
 
 void LineFollowState::HandleBothOuters(Step currentStep){
-    // Serial.println("both outers");
     if (currentStep == Step::forwardBlock || currentStep == Step::forwardPlatform){
         motorController->Forward();
         return;
@@ -194,9 +128,6 @@ void LineFollowState::HandleBothOuters(Step currentStep){
         Serial.println("    T junction found");Serial.flush();
         timeSinceJunction = 0.0;
         nextStepTimer = timeSinceJunctionThreshold;
-        // if (currentPath.PeekNextStep() == Step::forwardBlock){
-        //     motorController->GripperOpen();
-        // }
     }
 }
 

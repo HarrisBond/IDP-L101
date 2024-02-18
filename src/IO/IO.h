@@ -6,8 +6,7 @@
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 #include "DFRobot_VL53L0X.h"
 
-// #define true false
-// #define false true
+// a namespace containing functions and objects for interfacing with the physical robot
 
 #define OUTER_RIGHT_LINE_SENSOR_PIN (2)
 #define INNER_RIGHT_LINE_SENSOR_PIN (3)
@@ -36,19 +35,19 @@ namespace IO {
             Adafruit_DCMotor *gripperMotor;
             Servo armServo;
             void Initialise();
-            void SetRelativeSpeeds(float linear, float angular);
-            void SetSpeeds(float left, float right);
+            void SetRelativeSpeeds(float linear, float angular);//each input ranges from -1 to 1
+            void SetSpeeds(float left, float right);//set speed of each drive motor, ranging from -1 to 1
             void ForwardLeft();
             void ForwardRight();
             void Left();
             void Right();
             void Forward();
             void Stop();
-            void RaiseArm();
-            void LowerArm();
-            void GripperClose();
-            void GripperOpen();
-            void GripperStop();
+            void RaiseArm();// raise the gripper arm using the servo
+            void LowerArm();//lower the gripper arm using the servo
+            void GripperClose();//start closing the gripper
+            void GripperOpen();//start opening the gripper
+            void GripperStop();//release the gripper motor
             const float lineFollowLinearSpeed = 1.0;
             const float lineFollowAngularSpeed = 0.9;
             const int ArmServoTopAngle = 45;

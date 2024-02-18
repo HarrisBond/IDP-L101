@@ -7,6 +7,8 @@
 #include "ReversePlatformState.h"
 #include <Arduino.h>
 
+
+//executes a hardcoded sequence to drop a block onto a platform
 class BlockDropState : public State {
 public:
     BlockDropState();

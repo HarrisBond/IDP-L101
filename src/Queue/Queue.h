@@ -2,6 +2,8 @@
 #include "../Globals.h"
 #include <Arduino.h>
 
+
+//a very simple custom queue class to store a queue of Steps, for use in path planning.
 class Queue{
     public:
         Queue(int _maxSize);

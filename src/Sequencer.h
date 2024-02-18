@@ -6,6 +6,9 @@
 #include "stdlib.h"
 
 #define MAX_PATH_LENGTH 10
+
+//responsible for coordinating the high level function of the robot eg path planning. States within the state machine ask
+//sequencer for instructions which depend on the state of the robot within the course.
 class Sequencer{
     public:
         Sequencer() = delete;

@@ -1,7 +1,7 @@
 #pragma once
 #include "../Globals.h"
 
-
+//used by sequencer to store the decision tree which is traversed throughout the program
 class Node{
 public:
     Node(WayPoint _waypoint, Node* solid, Node* foam, Node* empty, int angleIfSolid, int angleIfFoam, int angleIfEmpty);
@@ -20,6 +20,7 @@ private:
     Node* nextIfSolid;
     Node* nextIfFoam;
     Node* nextIfEmpty;
+    //these turn angles are the angle to blindly turn after the current waypoint, depending on the current block type
     int nextTurnAngleIfSolid;
     int nextTurnAngleIfFoam;
     int nextTurnAngleIfEmpty;

@@ -26,9 +26,9 @@ void Sequencer::Initialize(){
     currentNode->SetNextIfEmpty(resA);
 
     Node* redSolidA = new Node(WayPoint::redSolid);
-    redSolidA->SetNextAngleIfEmpty(-170);
+    redSolidA->SetNextAngleIfEmpty(-180);
     Node* greenFoamA = new Node(WayPoint::greenFoam);
-    greenFoamA->SetNextAngleIfEmpty(170);
+    greenFoamA->SetNextAngleIfEmpty(180);
     resA->SetNextIfSolid(redSolidA);
     resA->SetNextIfFoam(greenFoamA);
 
@@ -39,9 +39,9 @@ void Sequencer::Initialize(){
     greenFoamA->SetNextIfEmpty(resB);
 
     Node* redSolidB = new Node(WayPoint::redSolid);
-    redSolidB->SetNextAngleIfEmpty(-90);
+    redSolidB->SetNextAngleIfEmpty(-70);
     Node* greenFoamB = new Node(WayPoint::greenFoam);
-    greenFoamB->SetNextAngleIfEmpty(90);
+    greenFoamB->SetNextAngleIfEmpty(70);
     resB->SetNextIfSolid(redSolidB);
     resB->SetNextIfFoam(greenFoamB);
 
@@ -108,7 +108,7 @@ void Sequencer::SetUpPathLUT(){
     Step* resA_greenFoam = new Step[3] {Step::forwardLeft, Step::forwardPlatform, Step::nullStep};
     SetPathLUT(WayPoint::resA, WayPoint::greenFoam, resA_greenFoam);
 
-    Step* redSolid_resB = new Step[4] {Step::forwardLeft, Step::forwardLeft, Step::forwardBlock, Step::nullStep};
+    Step* redSolid_resB = new Step[6] {Step::forwardRight, Step::forwardLeft, Step::forwardLeft, Step::forwardRight, Step::forwardBlock, Step::nullStep};
     SetPathLUT(WayPoint::redSolid, WayPoint::resB, redSolid_resB);
 
     Step* greenFoam_resB = new Step[5] {Step::forwardRight, Step::forwardRight, Step::forwardRight, Step::forwardBlock, Step::nullStep};

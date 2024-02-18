@@ -3,10 +3,8 @@
 #include "../Globals.h"
 #include <Arduino.h>
 
-//these store the direction bias. When a T Junction is reached, the bot will turn until both the
-//left and right sensors detect the line. At this point, we can either turn left or right, which
-//is determined by the left or right bias here.
-
+//stores a Step queue which represents the remaining steps to take to follow a path. These are generated
+//by the sequencer object for use in the line follow state.
 
 class Path{
     public:

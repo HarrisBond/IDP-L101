@@ -7,6 +7,8 @@
 #include <Arduino.h>
 #include "../Globals.h"
 
+
+//turns blindly (ignoring line sensors) for a time set by the sequencer object
 class BlindTurnState : public State {
 public:
     BlindTurnState();
